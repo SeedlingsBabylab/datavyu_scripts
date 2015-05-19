@@ -20,7 +20,7 @@ def train(features)
 end
 
 
-filename = File.expand_path("~/Desktop/Github/SeedlingsBabylab/datavyu_scripts/holmes.txt")
+filename = File.expand_path("~/Desktop/Github/SeedlingsBabylab/datavyu_scripts/big.txt")
 NWORDS ||= train(words(File.open(filename,'r').read))
 ALPHABET ||= 'abcdefghijklmnopqrstuvwxyz'
 
