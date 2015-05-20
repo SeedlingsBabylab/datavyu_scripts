@@ -21,12 +21,12 @@ begin
 	# Make sure that all the speaker codes are exactly 3 letters long
 	for cell in col.cells
 		if cell.speaker.to_s.length != 3
-			puts "Code ERROR (3 letter code required): Var: speaker\t  Ordinal: " +\
-			   	cell.ordinal.to_s + "\tVal: " + cell.speaker
+			puts "check_codes ERROR (3 letter code required): Variable: speaker\t      Cell# : " +\
+			   	cell.ordinal.to_s + "\tCurrent Value: " + cell.speaker
 		end
 		cell.argvals.each_with_index { |code, i|
 			if code == ""
-				puts "Code ERROR (Found empty code):       Var: " + cell.arglist[i].to_s + "    Ordinal: " + cell.ordinal.to_s
+				puts "check_codes ERROR (Found empty code):       Variable: " + cell.arglist[i].to_s + "    Cell# : " + cell.ordinal.to_s
 			end
 		}
 	end
