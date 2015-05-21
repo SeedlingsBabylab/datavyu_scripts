@@ -22,3 +22,20 @@ begin
 				"utterance_type", ["q", "d", "i", "u", "r", "s", "n"],
 				"object_present", ["y", "n"])
 ```
+
+You should run these scripts once you've finished coding. They're separated into 3 distinct programs with multiple checks per script:
+
+1. check_codes.rb
+  * entered values are one of the predefined codes
+  * speaker code is exactly 3 letters long
+  * none of the codes are empty
+2. check_comments.rb
+  * all of the non-comment codes are "NA"
+  * offset and onset are equal
+3. check_intervals.rb
+  * all onsets come prior to offsets
+
+You can run them by double clicking their names in the bottom left corner in Datavyu.
+
+
+![datavyu_scripts](data/datavyu_scripts_screen.png)
