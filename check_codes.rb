@@ -22,7 +22,7 @@ begin
 	for cell in col.cells
 		if cell.speaker.to_s.length != 3
 			puts "check_codes ERROR (3 letter code required): Variable: speaker\t      Cell# : " +\
-			   	cell.ordinal.to_s + "\tCurrent Value: " + cell.speaker
+			   	cell.ordinal.to_s + "   Current Value: " + cell.speaker
 		end
 		cell.argvals.each_with_index { |code, i|
 			if code == ""
