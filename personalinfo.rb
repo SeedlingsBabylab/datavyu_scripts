@@ -6,6 +6,18 @@ require 'Datavyu_API.rb'
 # timestamps of those regions. That output file 
 # should then be fed into the program that actually 
 # does the silencing. 
+#
+#
+# These comments should take the form:
+#
+#   %com: personal information [audio]: credit card number
+#
+# or
+#
+#   %com: personal information [video]: butt
+#
+#   
+
 
 begin
 
