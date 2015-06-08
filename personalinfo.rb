@@ -23,7 +23,7 @@ begin
 
 	column = "labeled_object_GC"	# set this as necessary
 
-	output = File.expand_path("~/desktop/muteregions.txt") # set this as necessary
+	output = File.expand_path("~/desktop/maskregions.txt") # set this as necessary
 	
 	col = getColumn(column)
 
