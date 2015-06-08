@@ -24,6 +24,10 @@ begin
 			if (cell.onset != cell.offset)
 				puts "check_comments ERROR: onset and offset are not equal:  Cell#: " + cell.ordinal.to_s
 			end
+		
+		elsif (cell.object.to_s.start_with?("%com:") &&
+				(cell.onset != cell.offset))
+			puts "check_comments ERROR: onset and offset are not equal:  Cell#: " + cell.ordinal.to_s
 		end
 	end
 end
