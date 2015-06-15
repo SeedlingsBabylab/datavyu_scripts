@@ -23,7 +23,7 @@ begin
 
 	column = "labeled_object_GC"	# set this as necessary
 
-	output = File.expand_path("~/desktop/maskregions.txt") # set this as necessary
+	output = File.expand_path("~/desktop/maskregions.csv") # set this as necessary
 	
 	col = getColumn(column)
 
@@ -37,7 +37,9 @@ begin
 		if (entry.start_with?("%com: personal info"))
 			if (entry.include?("[audio]"))
 				audio_regions.push([cell.onset, cell.offset])
-			elsif (entry.include?("[video]"))
+			end
+			
+			if (entry.include?("[video]"))
 				video_regions.push([cell.onset, cell.offset])
 			else
 				puts "Malformed personal information comment:  cell#: " + cell.ordinal.to_s
