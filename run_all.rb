@@ -51,12 +51,12 @@ begin
 
 			puts "comments ERROR: one of the values is not \"NA\":   Cell#: " + cell.ordinal.to_s
 
-			if (cell.onset != cell.offset)
+			if (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information"))
 				puts "comments ERROR: onset and offset are not equal:  Cell#: " + cell.ordinal.to_s
 			end
 		
 		elsif (cell.object.to_s.start_with?("%com:") &&
-				(cell.onset != cell.offset))
+			   (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information")))
 			puts "comments ERROR: onset and offset are not equal:  Cell#: " + cell.ordinal.to_s
 		end
 	end
@@ -78,7 +78,8 @@ begin
 	puts "\n\n\n"
 
 	
-
+	# Personal Info
+	#
 	# This part runs through the datavyu file
 	# and pulls out all the personal info comments.
 	# It then writes out a file containing the
