@@ -2,7 +2,10 @@ require 'Datavyu_API.rb'
 
 begin
 	
-	column = "labeled_object_GC"	# set this as necessary
+	columns = getColumnList()
+	#column = "labeled_object_GC"	# set this as necessary
+	
+	puts columns
 
 	# Check Codes
 	# 
@@ -11,25 +14,31 @@ begin
 	# function is called with the value of the "column" variable defined above.
 	# You need to change this by hand every time you run it on a different column.
 
-	checkValidCodes(column, "",
-				"utterance_type", ["q", "d", "i", "u", "r", "s", "n", "NA"],
-				"object_present", ["y", "n", "NA"])
+	for column in columns
+		checkValidCodes(column, "",
+					"utterance_type", ["q", "d", "i", "u", "r", "s", "n", "NA"],
+					"object_present", ["y", "n", "NA"])
+	end
 
 	puts
 
-	col = getColumn(column)
+	#col = getColumn(column)
 
+	for column in columns
+		col = getColumn(column)
 	# Make sure that all the speaker codes are exactly 3 letters long
-	for cell in col.cells
-		if cell.speaker.to_s.length != 3 && cell.speaker.to_s != "NA"
-			puts "check_codes ERROR (3 letter code required): Variable: speaker\t      Cell# : " +\
-			   	cell.ordinal.to_s + "   Current Value: " + cell.speaker
-		end
-		cell.argvals.each_with_index { |code, i|
-			if code == ""
-				puts "check_codes ERROR (Found empty code):       Variable: " + cell.arglist[i].to_s + "    Cell# : " + cell.ordinal.to_s
+		for cell in col.cells
+			if cell.speaker.to_s.length != 3 && cell.speaker.to_s != "NA"
+				puts "check codes: (3 letter code required): [Column]: " + column + "  [Variable]: speaker\t[Cell]# : " +\
+					cell.ordinal.to_s + "  [Current Value]: " + cell.speaker
 			end
-		}
+			cell.argvals.each_with_index { |code, i|
+				if code == ""
+					puts "check_codes (Found empty code): [Column]: " + column +\
+						"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
+				end
+			}
+		end
 	end
 
 
@@ -42,23 +51,26 @@ begin
 	# should be "NA". Also makes sure that onset/offset times for
 	# comments are equal.
 
-	for cell in col.cells
+	for column in columns
+		col = getColumn(column)
+        for cell in col.cells
 
-		if (cell.object.to_s.start_with?("%com:") &&
-				((cell.utterance_type.to_s != "NA") ||
-				 (cell.object_present.to_s != "NA") ||
-				 (cell.speaker.to_s != "NA")))
+            if (cell.object.to_s.start_with?("%com:") &&
+                    ((cell.utterance_type.to_s != "NA") ||
+                     (cell.object_present.to_s != "NA") ||
+                     (cell.speaker.to_s != "NA")))
 
-			puts "comments ERROR: one of the values is not \"NA\":   Cell#: " + cell.ordinal.to_s
+                puts "comments ERROR: one of the values is not \"NA\": [Column] " + column + "[Cell#]: " + cell.ordinal.to_s
 
-			if (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information"))
-				puts "comments ERROR: onset and offset are not equal:  Cell#: " + cell.ordinal.to_s
-			end
-		
-		elsif (cell.object.to_s.start_with?("%com:") &&
-			   (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information")))
-			puts "comments ERROR: onset and offset are not equal:  Cell#: " + cell.ordinal.to_s
-		end
+                if (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information"))
+                    puts "comments ERROR: onset and offset are not equal: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
+                end
+
+            elsif (cell.object.to_s.start_with?("%com:") &&
+                   (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information")))
+                puts "comments ERROR: onset and offset are not equal: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
+            end
+        end
 	end
 
 
@@ -67,12 +79,14 @@ begin
 	# 
 	# this makes sure all onsets are < offsets
 	#	scan_for_bad_cells(col)
+	for column in columns
+		col = getColumn(column)
+		for cell in col.cells
 
-	for cell in col.cells
+			if cell.onset > cell.offset
+				puts "intervals ERROR: onset is greater than offset: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
 
-		if cell.onset > cell.offset
-			puts "intervals ERROR: onset is greater than offset:  Cell#: " + cell.ordinal.to_s
-
+			end
 		end
 	end
 	puts "\n\n\n"
@@ -101,39 +115,41 @@ begin
 	#  will be generated. This is the first line after this comment 
 
 	output_path = "~/desktop/maskregions.csv" # set this as necessary
-
-	output = File.expand_path(output_path) 	
-	col = getColumn(column)
-
-	# arrays containing millisecond onset/offsets for personal information
-	audio_regions = Array.new
-	video_regions = Array.new
 	
-	entry = nil
-	for cell in col.cells
-		entry = cell.object.to_s
-		if (entry.start_with?("%com: personal info"))
-			if (entry.include?("[audio]"))
-				audio_regions.push([cell.onset, cell.offset])
-			elsif (entry.include?("[video]"))
-				video_regions.push([cell.onset, cell.offset])
-			else
-				puts "Malformed personal information comment:  cell#: " + cell.ordinal.to_s
-			end
-		end
+	output = File.expand_path(output_path) 	
+	for column in columns
+        col = getColumn(column)
+
+        # arrays containing millisecond onset/offsets for personal information
+        audio_regions = Array.new
+        video_regions = Array.new
+
+        entry = nil
+        for cell in col.cells
+            entry = cell.object.to_s
+            if (entry.start_with?("%com: personal info"))
+                if (entry.include?("[audio]"))
+                    audio_regions.push([cell.onset, cell.offset])
+                elsif (entry.include?("[video]"))
+                    video_regions.push([cell.onset, cell.offset])
+                else
+                    puts "Malformed personal information comment:  cell#: " + cell.ordinal.to_s
+                end
+            end
+        end
+
+        output_file = File.open(output, "w")
+
+        for region in audio_regions
+                output_file.puts("audio,#{region[0]},#{region[1]}")
+        end
+
+        for region in video_regions
+            output_file.puts("video,#{region[0]},#{region[1]}")
+        end
+
+        output_file.close()
+
+        puts "personal info timestamps written to: " + output_path + "\n\n"
 	end
-
-	output_file = File.open(output, "w")
-
-	for region in audio_regions
-			output_file.puts("audio,#{region[0]},#{region[1]}")
-	end
-
-	for region in video_regions
-		output_file.puts("video,#{region[0]},#{region[1]}")
-	end
-
-	output_file.close()
-
-	puts "personal info timestamps written to: " + output_path + "\n\n"
 end
