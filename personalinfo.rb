@@ -3,9 +3,9 @@ require 'Datavyu_API.rb'
 # This script runs through the datavyu file
 # and pulls out all the personal info comments.
 # It then writes out a file containing the
-# timestamps of those regions. That output file 
-# should then be fed into the program that actually 
-# does the silencing. 
+# timestamps of those regions. That output file
+# should then be fed into the program that actually
+# does the silencing.
 #
 #
 # These comments should take the form:
@@ -16,13 +16,16 @@ require 'Datavyu_API.rb'
 #
 #   %com: personal information [video]: butt
 #
-#   
-begin 
+#
+begin
 	columns = getColumnList()
-	
-	output_path = "~/desktop/maskregions.csv" # set this as necessary
-	
-	output = File.expand_path(output_path) 	
+
+	output_path = $pj.getProjectDirectory() + File::SEPARATOR + $pj.getProjectName() + "_personal_info.csv"
+
+	no_persinfo_file_path = "/Volumes/seedlings/Scripts_and_Apps/no_personal_info.txt"
+
+	#output = File.expand_path(output_path)
+
 	for column in columns
 
         col = getColumn(column)
@@ -33,6 +36,7 @@ begin
 
         entry = nil
         for cell in col.cells
+
             entry = cell.object.to_s
             if (entry.start_with?("%com: personal info"))
                 if (entry.include?("[audio]"))
@@ -43,10 +47,10 @@ begin
                     puts "Malformed personal information comment:  cell#: " + cell.ordinal.to_s
                 end
 			end
-        end
+		end
 
-        output_file = File.open(output, "w")
-
+        output_file = File.open(output_path, "w")
+		
         for region in audio_regions
                 output_file.puts("audio,#{region[0]},#{region[1]}")
         end
@@ -55,6 +59,16 @@ begin
             output_file.puts("video,#{region[0]},#{region[1]}")
         end
 
+		# if there are no personal info regions, add the name of the file
+		# to the no_personal_info.txt manifest in /seedlings/Scripts_and_Apps/
+		if (audio_regions.empty? && video_regions.empty?)
+			open(no_persinfo_file_path, "a") do |f|
+				f.puts $pj.getProjectName()
+			end
+			puts "There were no personal info regions"
+			exit
+		end
+		
         output_file.close()
 
         puts "personal info timestamps written to: " + output_path + "\n\n"
