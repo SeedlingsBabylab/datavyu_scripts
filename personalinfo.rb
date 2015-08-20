@@ -20,11 +20,19 @@ require 'Datavyu_API.rb'
 begin
 	columns = getColumnList()
 
-	output_path = $pj.getProjectDirectory() + File::SEPARATOR + $pj.getProjectName() + "_personal_info.csv"
 
-	no_persinfo_file_path = "/Volumes/seedlings/Scripts_and_Apps/no_personal_info.txt"
 
-	#output = File.expand_path(output_path)
+		output_path = $pj.getProjectDirectory() + File::SEPARATOR + $pj.getProjectName() + "_personal_info.csv"
+		output_path.gsub!('\\', '/')
+
+		split_path = output_path.split(File::SEPARATOR)
+
+		case CONFIG['host_os']
+		when /mswin|windows/i
+			no_persinfo_file_path = File.join(split_path[0], "Scripts_and_Apps/no_personal_info.txt")
+		else
+			no_persinfo_file_path = "/Volumes/seedlings/Scripts_and_Apps/no_personal_info.txt"
+		end
 
 	for column in columns
 
@@ -49,16 +57,6 @@ begin
 			end
 		end
 
-        output_file = File.open(output_path, "w")
-		
-        for region in audio_regions
-                output_file.puts("audio,#{region[0]},#{region[1]}")
-        end
-
-        for region in video_regions
-            output_file.puts("video,#{region[0]},#{region[1]}")
-        end
-
 		# if there are no personal info regions, add the name of the file
 		# to the no_personal_info.txt manifest in /seedlings/Scripts_and_Apps/
 		if (audio_regions.empty? && video_regions.empty?)
@@ -68,7 +66,16 @@ begin
 			puts "There were no personal info regions"
 			exit
 		end
-		
+        output_file = File.open(output_path, "w")
+
+        for region in audio_regions
+                output_file.puts("audio,#{region[0]},#{region[1]}")
+        end
+
+        for region in video_regions
+            output_file.puts("video,#{region[0]},#{region[1]}")
+        end
+
         output_file.close()
 
         puts "personal info timestamps written to: " + output_path + "\n\n"
