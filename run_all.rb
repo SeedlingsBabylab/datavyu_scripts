@@ -82,6 +82,9 @@ begin
 				puts "intervals ERROR: onset is greater than offset: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
 
 			end
+			if !cell.object.to_s.start_with?("%com") && (cell.onset == cell.offset)
+				puts "intervals ERROR: onset and offset are equal in non-comment cell: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
+			end	   
 		end
 	end
 	puts "\n\n\n"
