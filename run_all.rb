@@ -20,7 +20,7 @@ begin
 	for column in columns
 		checkValidCodes(column, "",
 					"utterance_type", ["q", "d", "i", "u", "r", "s", "n", "NA"],
-					"object_present", ["y", "n", "NA"])
+					"object_present", ["y", "n", "u", "NA"])
 	end
 
 	puts

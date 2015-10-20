@@ -11,8 +11,8 @@ begin
 	# You need to change this by hand every time you run it on a different column.
 
 	checkValidCodes(column, "",
-				"utterance_type", ["q", "d", "i", "u", "r", "s", "n"],
-				"object_present", ["y", "n"])
+				"utterance_type", ["q", "d", "i", "u", "r", "s", "n", "NA"],
+				"object_present", ["y", "n", "u", "NA"])
 
 	puts
 
