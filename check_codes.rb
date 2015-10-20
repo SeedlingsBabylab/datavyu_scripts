@@ -24,9 +24,50 @@ begin
 			puts "check_codes ERROR (3 letter code required): Variable: speaker\t      Cell# : " +\
 			   	cell.ordinal.to_s + "   Current Value: " + cell.speaker
 		end
+
+		# Speaker code has to be all uppercase
+		if !is_uppercase(cell.speaker.to_s) && !cell.object.to_s.start_with?("%com:")
+			puts "check codes: speaker code must be uppercase: [Column]: " + column + " [Cell]# : "+\
+			cell.ordinal.to_s
+		end
+
+		# object_present needs to be single character and lowercase
+		if (cell.object_present.to_s.length != 1) && !cell.object.to_s.start_with?("%com:")
+			puts "check codes: object_present needs to be a single character: [Column]: " + column + " [Cell]# : "+\
+			cell.ordinal.to_s
+		end
+
+		if is_uppercase(cell.object_present.to_s) && !cell.object.to_s.start_with?("%com:")
+			puts "check codes: object_present needs to be lower case: [Column]: " + column + " [Cell]# : "+\
+			cell.ordinal.to_s
+		end
+
+		# utterance_type needs to be single character and lowercase
+		if (cell.utterance_type.to_s.length != 1) && !cell.object.to_s.start_with?("%com:")
+			puts "check codes: utterance_type needs to be a single character: [Column]: " + column + " [Cell]# : "+\
+			cell.ordinal.to_s
+		end
+
+		if is_uppercase(cell.utterance_type.to_s) && !cell.object.to_s.start_with?("%com:")
+			puts "check codes: utterance_type needs to be lower case: [Column]: " + column + " [Cell]# : "+\
+			cell.ordinal.to_s
+		end
+
 		cell.argvals.each_with_index { |code, i|
 			if code == ""
 				puts "check_codes ERROR (Found empty code):       Variable: " + cell.arglist[i].to_s + "    Cell# : " + cell.ordinal.to_s
+			end
+
+			# "NA" needs to be all uppercase
+			if code == "na" || code =="nA" || code == "Na"
+				puts "check_codes: NA needs to be uppercase: [Column]: " + column +\
+					"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
+			end
+
+			# codes cannot contain space, unless it's inside comment
+			if !code.start_with?("%com:") and code.match(/\s/)
+				puts "check_codes: code cannot contain space: [Column]: " + column +\
+					"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 			end
 		}
 	end
