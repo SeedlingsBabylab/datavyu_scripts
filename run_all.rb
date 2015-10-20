@@ -4,6 +4,10 @@ include Config
 
 begin
 
+	def is_uppercase(some_string)
+		return some_string == some_string.upcase
+	end
+
 	columns = getColumnList()
 
 	# Check Codes
@@ -24,14 +28,58 @@ begin
 	for column in columns
 		col = getColumn(column)
 	# Make sure that all the speaker codes are exactly 3 letters long
+	# and check the case
 		for cell in col.cells
 			if cell.speaker.to_s.length != 3 && cell.speaker.to_s != "NA"
 				puts "check codes: (3 letter code required): [Column]: " + column + "  [Variable]: speaker\t[Cell]# : " +\
 					cell.ordinal.to_s + "  [Current Value]: " + cell.speaker
 			end
+
+			# Speaker code has to be all uppercase
+			if !is_uppercase(cell.speaker.to_s) && !cell.object.to_s.start_with?("%com:")
+				puts "check codes: speaker code must be uppercase: [Column]: " + column + " [Cell]# : "+\
+				cell.ordinal.to_s
+			end
+
+			# object_present needs to be single character and lowercase
+			if (cell.object_present.to_s.length != 1) && !cell.object.to_s.start_with?("%com:")
+				puts "check codes: object_present needs to be a single character: [Column]: " + column + " [Cell]# : "+\
+				cell.ordinal.to_s
+			end
+
+			if is_uppercase(cell.object_present.to_s) && !cell.object.to_s.start_with?("%com:")
+				puts "check codes: object_present needs to be lower case: [Column]: " + column + " [Cell]# : "+\
+				cell.ordinal.to_s
+			end
+
+			# utterance_type needs to be single character and lowercase
+			if (cell.utterance_type.to_s.length != 1) && !cell.object.to_s.start_with?("%com:")
+				puts "check codes: utterance_type needs to be a single character: [Column]: " + column + " [Cell]# : "+\
+				cell.ordinal.to_s
+			end
+
+			if is_uppercase(cell.utterance_type.to_s) && !cell.object.to_s.start_with?("%com:")
+				puts "check codes: utterance_type needs to be lower case: [Column]: " + column + " [Cell]# : "+\
+				cell.ordinal.to_s
+			end
+
+
 			cell.argvals.each_with_index { |code, i|
+				# codes can't be empty
 				if code == ""
 					puts "check_codes (Found empty code): [Column]: " + column +\
+						"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
+				end
+
+				# "NA" needs to be all uppercase
+				if code == "na" || code =="nA" || code == "Na"
+					puts "check_codes: NA needs to be uppercase: [Column]: " + column +\
+						"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
+				end
+
+				# codes cannot contain space, unless it's inside comment
+				if !code.start_with?("%com:") and code.match(/\s/)
+					puts "check_codes: code cannot contain space: [Column]: " + column +\
 						"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 				end
 			}
@@ -84,7 +132,7 @@ begin
 			end
 			if !cell.object.to_s.start_with?("%com") && (cell.onset == cell.offset)
 				puts "intervals ERROR: onset and offset are equal in non-comment cell: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
-			end	   
+			end
 		end
 	end
 	puts "\n\n\n"
@@ -174,4 +222,7 @@ begin
 
         puts "personal info timestamps written to: " + output_path + "\n\n"
 	end
+
+
+
 end
