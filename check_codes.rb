@@ -60,13 +60,13 @@ begin
 
 			# "NA" needs to be all uppercase
 			if code == "na" || code =="nA" || code == "Na"
-				puts "check_codes: NA needs to be uppercase: [Column]: " + column +\
+				puts "check_codes: NA needs to be uppercase: [Column]: " + column+\
 					"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 			end
 
 			# codes cannot contain space, unless it's inside comment
 			if !code.start_with?("%com:") and code.match(/\s/)
-				puts "check_codes: code cannot contain space: [Column]: " + column +\
+				puts "check_codes: code cannot contain space: [Column]: " + column+\
 					"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 			end
 		}

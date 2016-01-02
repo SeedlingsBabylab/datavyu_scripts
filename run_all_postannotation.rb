@@ -4,8 +4,31 @@ include Config
 
 begin
 
+	$valid_utt_type = Array["q", "d", "i", "u", "r", "s", "n", "NA"]
+	$valid_obj_pres = Array["y", "n", "u", "NA"]
+
+	def checkCodes(cell)
+		if not $valid_utt_type.include?(cell.utterance_type.to_s)
+			puts "Cell# "+cell.ordinal.to_s+":  \""+cell.utterance_type.to_s+"\" is not a valid utterance_type code\n"
+		end
+		if not $valid_obj_pres.include?(cell.object_present.to_s)
+			puts "Cell# "+cell.ordinal.to_s+":  \""+cell.object_present.to_s+"\" is not a valid object_present code\n"
+		end
+	end
+
+
 	def is_uppercase(some_string)
 		return some_string == some_string.upcase
+	end
+
+
+	def check_mwu(cell)
+		if cell.object_present.to_s != "NA"
+			puts "Cell# " + cell.ordinal.to_s + ":  object_present must be NA in \"%com: mwu\" cell"
+		end
+		if cell.speaker.to_s != "NA"
+			puts "Cell# " + cell.ordinal.to_s + ":  speaker must be NA in \"%com: mwu\" cell"
+		end
 	end
 
 	columns = getColumnList()
@@ -17,11 +40,11 @@ begin
 	# function is called with the value of the "column" variable defined above.
 	# You need to change this by hand every time you run it on a different column.
 
-	for column in columns
-		checkValidCodes(column, "",
-					"utterance_type", ["q", "d", "i", "u", "r", "s", "n", "NA"],
-					"object_present", ["y", "n", "u", "NA"])
-	end
+	# for column in columns
+	# 	checkValidCodes(column, "",
+	# 				"utterance_type", ["q", "d", "i", "u", "r", "s", "n", "NA"],
+	# 				"object_present", ["y", "n", "u", "NA"])
+	# end
 
 	puts
 
@@ -30,8 +53,16 @@ begin
 	# Make sure that all the speaker codes are exactly 3 letters long
 	# and check the case
 		for cell in col.cells
+
+			if cell.object.to_s.start_with?("%com: mwu")
+				check_mwu(cell)
+				next
+			end
+
+			checkCodes(cell)
+
 			if cell.speaker.to_s.length != 3 && cell.speaker.to_s != "NA"
-				puts "check codes: (3 letter code required): [Column]: " + column + "  [Variable]: speaker\t[Cell]# : " +\
+				puts "check codes: (3 letter code required): [Column]: "+column+"  [Variable]: speaker\t[Cell]# : "+\
 					cell.ordinal.to_s + "  [Current Value]: " + cell.speaker
 			end
 
@@ -67,19 +98,19 @@ begin
 			cell.argvals.each_with_index { |code, i|
 				# codes can't be empty
 				if code == ""
-					puts "check_codes (Found empty code): [Column]: " + column +\
+					puts "check_codes (Found empty code): [Column]: " + column+\
 						"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 				end
 
 				# "NA" needs to be all uppercase
 				if code == "na" || code =="nA" || code == "Na"
-					puts "check_codes: NA needs to be uppercase: [Column]: " + column +\
+					puts "check_codes: NA needs to be uppercase: [Column]: " + column+\
 						"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 				end
 
 				# codes cannot contain space, unless it's inside comment
 				if !code.start_with?("%com:") and code.match(/\s/)
-					puts "check_codes: code cannot contain space: [Column]: " + column +\
+					puts "check_codes: code cannot contain space: [Column]: " + column+\
 						"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 				end
 			}
@@ -102,7 +133,9 @@ begin
                     ((cell.utterance_type.to_s != "NA") ||
                      (cell.object_present.to_s != "NA") ||
                      (cell.speaker.to_s != "NA")))
-
+								if cell.object.to_s.start_with?("%com: mwu")
+									next
+								end
                 puts "comments ERROR: one of the values is not \"NA\": [Column] " + column + "[Cell#]: " + cell.ordinal.to_s
 
                 if (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information"))
