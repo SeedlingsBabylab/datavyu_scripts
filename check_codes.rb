@@ -21,7 +21,7 @@ begin
 	# Make sure that all the speaker codes are exactly 3 letters long
 	for cell in col.cells
 		if cell.speaker.to_s.length != 3
-			puts "check_codes ERROR (3 letter code required): Variable: speaker\t      Cell# : " +\
+			puts "check_codes ERROR (3 letter code required): Variable: speaker\t      Cell# : "+\
 			   	cell.ordinal.to_s + "   Current Value: " + cell.speaker
 		end
 

@@ -1,34 +1,13 @@
-#datavyu scripts
+# datavyu scripts
 
-This repository contains a collection of ruby scripts that check to see if Datavyu entries are properly formatted. One of them, run_all.rb, runs all the checks at the same time. You should usually run this rather than the individual scripts. Clone this repository to the local machines and select its folder as the destination to look for scripts from within Datavyu (Script -> Set Favorites Folder).
+This repository contains a collection of ruby scripts that check to see if Datavyu entries are properly formatted. One of them, run_all_postannotation.rb, runs all the checks at the same time. You should usually run this rather than the individual scripts. Clone this repository to the local machines and select its folder as the destination to look for scripts from within Datavyu (Script -> Set Favorites Folder).
 
-##running
+## running
 
-There's a variable named column at the top of the run_all.rb script which should be adjusted by hand when running. It looks like this:
-
-```ruby
-require 'Datavyu_API.rb'
-
-begin
-
-	column = "labeled_object_GC"	# set this as necessary
-
-	# Check Codes
-	#
-	# checkValidCodes() makes sure that all the codes found in each cell of
-	# the selected column are valid codes for that specific element. The
-	# function is called with the value of the "column" variable defined above.
-	# You need to change this by hand every time you run it on a different column.
-
-	checkValidCodes(column, "",
-				"utterance_type", ["q", "d", "i", "u", "r", "s", "n", "NA"],
-				"object_present", ["y", "n", "NA"])
+To run the run_all_postannotation.rb script, simply double click it in the scripts box in the bottom left hand corner of the main Datavyu window.
 
 
-
-```
-
-Each individual script also has this variable. For example (from personalinfo.rb):
+The individual scripts have a variable named "column" that need to be adjusted by hand. These scripts will be updated to run without making the adjustment soon. For example (from personalinfo.rb):
 
 
 ```ruby
@@ -47,7 +26,7 @@ begin
 
 ```
 
-You should run these scripts once you've finished coding. Usually this means running run_all.rb rather than each individual script. They're separated into 4 distinct programs with multiple checks per script:
+You should run these scripts once you've finished coding. Usually this means running run_all_postannotation.rb rather than each individual script. They're separated into 4 distinct programs with multiple checks per script:
 
 1. check_codes.rb
   * entered values are one of the predefined codes
