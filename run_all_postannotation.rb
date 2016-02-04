@@ -208,7 +208,13 @@ begin
 	#puts output_path
 	#output = File.expand_path(output_path)
 
-	#File.readlines(no_persinfo_file_path).each do |puts line|
+	no_pi = IO.readlines(no_persinfo_file_path)
+	already_in_nopi = false
+	for element in no_pi
+		if element.include? $pj.getProjectName()
+			already_in_nopi = true
+		end
+	end
 	for column in columns
 
         col = getColumn(column)
@@ -237,11 +243,14 @@ begin
 
 				# if there are no personal info regions, add the name of the file
 				# to the no_personal_info.txt manifest in /seedlings/Scripts_and_Apps/
-				if (audio_regions.empty? && video_regions.empty?)
+				if (audio_regions.empty? && video_regions.empty? && !already_in_nopi)
 					open(no_persinfo_file_path, "a") do |f|
 						f.puts $pj.getProjectName()
 					end
 					puts "There were no personal info regions"
+					exit
+				end
+				if already_in_nopi
 					exit
 				end
 				output_file = File.open(output_path, "w")
