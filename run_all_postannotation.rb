@@ -208,10 +208,13 @@ begin
 	#puts output_path
 	#output = File.expand_path(output_path)
 
+	#File.readlines(no_persinfo_file_path).each do |puts line|
 	for column in columns
 
         col = getColumn(column)
-
+				if col.cells.length == 0
+					next
+				end
         # arrays containing millisecond onset/offsets for personal information
         audio_regions = Array.new
         video_regions = Array.new
