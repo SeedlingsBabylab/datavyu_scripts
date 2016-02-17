@@ -237,9 +237,20 @@ begin
                 else
                     puts "Malformed personal information comment:  cell#: " + cell.ordinal.to_s
                 end
+            end
 				end
-	end
 
+				used_to_be_nopi = false
+				if already_in_nopi && (!audio_regions.empty? || !video_regions.empty?)
+					used_to_be_nopi = true
+					no_pi.delete($pj.getProjectName())
+					no_pi.delete($pj.getProjectName()+"\n")
+					File.open(no_persinfo_file_path, 'w') do |f|
+						f.truncate(0)
+						f.puts(no_pi)
+					end
+					puts $pj.getProjectName() + " used to have no personal info. It has been removed from the no_personal_info list\n\n"
+				end
 
 				# if there are no personal info regions, add the name of the file
 				# to the no_personal_info.txt manifest in /seedlings/Scripts_and_Apps/
@@ -250,7 +261,7 @@ begin
 					puts "There were no personal info regions"
 					exit
 				end
-				if already_in_nopi
+				if already_in_nopi && !used_to_be_nopi
 					exit
 				end
 				output_file = File.open(output_path, "w")
