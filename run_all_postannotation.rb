@@ -219,6 +219,7 @@ begin
 
         col = getColumn(column)
 				if col.cells.length == 0
+					puts "\nPlease delete the empty extra column....\n"
 					next
 				end
         # arrays containing millisecond onset/offsets for personal information
@@ -245,6 +246,7 @@ begin
 					used_to_be_nopi = true
 					no_pi.delete($pj.getProjectName())
 					no_pi.delete($pj.getProjectName()+"\n")
+
 					File.open(no_persinfo_file_path, 'w') do |f|
 						f.truncate(0)
 						f.puts(no_pi)
