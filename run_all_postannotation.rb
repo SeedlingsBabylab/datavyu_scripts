@@ -136,14 +136,20 @@ begin
 								if cell.object.to_s.start_with?("%com: mwu")
 									next
 								end
-                puts "comments ERROR: one of the values is not \"NA\": [Column] " + column + "[Cell#]: " + cell.ordinal.to_s
+                puts "comments ERROR: one of the values is not \"NA\": [Column] "	 + column + "[Cell#]: " + cell.ordinal.to_s
 
                 if (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information"))
+                  diff = cell.offset - cell.onset
+                  if diff.abs <= 1
+                    next
+                  end
                     puts "comments ERROR: onset and offset are not equal: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
                 end
 
             elsif (cell.object.to_s.start_with?("%com:") &&
                    (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information")))
+              	puts cell.onset
+                puts cell.offset
                 puts "comments ERROR: onset and offset are not equal: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
             end
         end
