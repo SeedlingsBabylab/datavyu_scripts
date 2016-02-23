@@ -3,6 +3,8 @@ require 'rbconfig'
 include Config
 
 begin
+  # puts $pj.getDatabaseFileName()
+  # puts $pj.getProjectName()
 
 	$valid_utt_type = Array["q", "d", "i", "u", "r", "s", "n", "NA"]
 	$valid_obj_pres = Array["y", "n", "u", "NA"]
@@ -148,8 +150,6 @@ begin
 
             elsif (cell.object.to_s.start_with?("%com:") &&
                    (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information")))
-              	puts cell.onset
-                puts cell.offset
                 puts "comments ERROR: onset and offset are not equal: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
             end
         end
