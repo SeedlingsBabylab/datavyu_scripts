@@ -96,6 +96,15 @@ begin
 				cell.ordinal.to_s
 			end
 
+			split_object = cell.object.to_s.split("+")
+			if split_object.length > 1
+				for word in split_object[1..-1]
+					if is_uppercase(word[0].chr)
+						puts "check codes: only the first word in a multi-word object can be uppercase: [Cell]# : "+ cell.ordinal.to_s
+					end
+				end
+			end
+
 
 			cell.argvals.each_with_index { |code, i|
 				# codes can't be empty
