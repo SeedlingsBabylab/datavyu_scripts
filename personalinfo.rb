@@ -1,5 +1,5 @@
 require 'Datavyu_API.rb'
-
+require 'rbconfig'
 # This script runs through the datavyu file
 # and pulls out all the personal info comments.
 # It then writes out a file containing the
@@ -27,7 +27,7 @@ begin
 
 		split_path = output_path.split(File::SEPARATOR)
 
-		case CONFIG['host_os']
+		case RbConfig::CONFIG['host_os']
 		when /mswin|windows/i
 			no_persinfo_file_path = File.join(split_path[0], "Scripts_and_Apps/no_personal_info.txt")
 		else
@@ -43,18 +43,24 @@ begin
         video_regions = Array.new
 
         entry = nil
-        for cell in col.cells
-
+				for cell in col.cells
             entry = cell.object.to_s
             if (entry.start_with?("%com: personal info"))
                 if (entry.include?("[audio]"))
                     audio_regions.push([cell.onset, cell.offset])
-                elsif (entry.include?("[video]"))
+								end
+
+                if (entry.include?("[video]"))
                     video_regions.push([cell.onset, cell.offset])
-                else
+								end
+
+                if (!(entry.include?("[audio]") || entry.include?("[video]")))
                     puts "Malformed personal information comment:  cell#: " + cell.ordinal.to_s
-                end
-			end
+								end
+
+            end
+
+					end
 		end
 
 		# if there are no personal info regions, add the name of the file
@@ -79,5 +85,5 @@ begin
         output_file.close()
 
         puts "personal info timestamps written to: " + output_path + "\n\n"
-	end
+
 end
