@@ -8,7 +8,7 @@ begin
 
 
 	$failed_check_path = File.expand_path("~/code/work/babylab/datavyu_scripts/failed_check.csv")
-
+	$passed_check_path = File.expand_path("~/code/work/babylab/datavyu_scripts/passed_check.csv")
 
 	# this is the path you need to set:
 	batch_filedir = File.expand_path("~/code/work/babylab/datavyu_scripts/opffiles")
@@ -24,17 +24,22 @@ begin
 	$failed_check = Array.new
 	$file_errors = Array.new
 
+	$file_passed_check = true
+	$passed_check = Array.new
+
 	def checkCodes(cell, proj_name)
 		if not $valid_utt_type.include?(cell.utterance_type.to_s)
 			error = "["+proj_name+"]:  " + "Cell# "+cell.ordinal.to_s+":  \""+cell.utterance_type.to_s+"\" is not a valid utterance_type code\n"
 			#$output.puts(error)
 			$file_errors.push(error)
+			$file_passed_check = false
 			add_to_failed_check(proj_name)
 		end
 		if not $valid_obj_pres.include?(cell.object_present.to_s)
 			error = "["+proj_name+"]:  " + "Cell# "+cell.ordinal.to_s+":  \""+cell.object_present.to_s+"\" is not a valid object_present code\n"
 			#$output.puts(error)
 			$file_errors.push(error)
+			$file_passed_check = false
 			add_to_failed_check(proj_name)
 		end
 	end
@@ -49,12 +54,14 @@ begin
 			error = "["+proj_name+"]:  " + "Cell# " + cell.ordinal.to_s + ":  object_present must be NA in \"%com: mwu\" cell"
 			#$output.puts(error)
 			$file_errors.push(error)
+			$file_passed_check = false
 			add_to_failed_check(proj_name)
 		end
 		if cell.speaker.to_s != "NA"
 			error = "["+proj_name+"]:  " + "Cell# " + cell.ordinal.to_s + ":  speaker must be NA in \"%com: mwu\" cell"
 			#$output.puts(error)
 			$file_errors.push(error)
+			$file_passed_check = false
 			add_to_failed_check(proj_name)
 		end
 	end
@@ -72,6 +79,13 @@ begin
 		end
 	end
 
+	def output_passed_check()
+		passed_check_file = File.new($passed_check_path, "w")
+		for file in $passed_check
+			passed_check_file.puts(file)
+		end
+	end
+
 	def output_errors()
 		output = File.new($out_file, 'w')
 		for error in $file_errors
@@ -82,6 +96,7 @@ begin
 
 
 	for file in filenames
+		$file_passed_check = true
 		if file.include?(".opf")
 			puts "LOADING DATABASE: " + batch_filedir+File::SEPARATOR+file
 			$db, $pj = load_db(batch_filedir+File::SEPARATOR+file)
@@ -122,6 +137,7 @@ begin
 							cell.ordinal.to_s + "  [Current Value]: " + cell.speaker
 							#$output.puts(error)
 							$file_errors.push(error)
+							$file_passed_check = false
 							add_to_failed_check(proj_name)
 					end
 
@@ -131,6 +147,7 @@ begin
 						cell.ordinal.to_s
 						#$output.puts(error)
 						$file_errors.push(error)
+						$file_passed_check = false
 						add_to_failed_check(proj_name)
 					end
 
@@ -140,6 +157,7 @@ begin
 						cell.ordinal.to_s
 						#$output.puts(error)
 						$file_errors.push(error)
+						$file_passed_check = false
 						add_to_failed_check(proj_name)
 					end
 
@@ -148,6 +166,7 @@ begin
 						cell.ordinal.to_s
 						#$output.puts(error)
 						$file_errors.push(error)
+						$file_passed_check = false
 						add_to_failed_check(proj_name)
 					end
 
@@ -157,6 +176,7 @@ begin
 						cell.ordinal.to_s
 						#$output.puts(error)
 						$file_errors.push(error)
+						$file_passed_check = false
 						add_to_failed_check(proj_name)
 					end
 
@@ -165,6 +185,7 @@ begin
 						cell.ordinal.to_s
 						#$output.puts(error)
 						$file_errors.push(error)
+						$file_passed_check = false
 						add_to_failed_check(proj_name)
 					end
 
@@ -175,6 +196,7 @@ begin
 								error = "["+proj_name+"]:  " + "check codes: only the first word in a multi-word object can be uppercase: [Cell]# : "+ cell.ordinal.to_s
 								#$output.puts(error)
 								$file_errors.push(error)
+								$file_passed_check = false
 								add_to_failed_check(proj_name)
 							end
 						end
@@ -188,6 +210,7 @@ begin
 								"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 								#$output.puts(error)
 								$file_errors.push(error)
+								$file_passed_check = false
 								add_to_failed_check(proj_name)
 						end
 
@@ -197,6 +220,7 @@ begin
 								"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 								#$output.puts(error)
 								$file_errors.push(error)
+								$file_passed_check = false
 								add_to_failed_check(proj_name)
 						end
 
@@ -206,6 +230,7 @@ begin
 								"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 								#$output.puts(error)
 								$file_errors.push(error)
+								$file_passed_check = false
 								add_to_failed_check(proj_name)
 						end
 					}
@@ -234,6 +259,7 @@ begin
 		                error = "["+proj_name+"]:  " + "comments ERROR: one of the values is not \"NA\": [Column] "	 + column + "[Cell#]: " + cell.ordinal.to_s
 										#$output.puts(error)
 										$file_errors.push(error)
+										$file_passed_check = false
 										add_to_failed_check(proj_name)
 
 		                if (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information"))
@@ -244,6 +270,7 @@ begin
 		                    error = "["+proj_name+"]:  " + "comments ERROR: onset and offset are not equal: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
 												#$output.puts(error)
 												$file_errors.push(error)
+												$file_passed_check = false
 												add_to_failed_check(proj_name)
 		                end
 
@@ -252,6 +279,7 @@ begin
 		                error = "["+proj_name+"]:  " + "comments ERROR: onset and offset are not equal: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
 										#$output.puts(error)
 										$file_errors.push(error)
+										$file_passed_check = false
 										add_to_failed_check(proj_name)
 		            end
 		        end
@@ -271,6 +299,7 @@ begin
 						error = "["+proj_name+"]:  " + "intervals ERROR: onset is greater than offset: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
 						#$output.puts(error)
 						$file_errors.push(error)
+						$file_passed_check = false
 						add_to_failed_check(proj_name)
 
 					end
@@ -278,6 +307,7 @@ begin
 						error = "["+proj_name+"]:  " + "intervals ERROR: onset and offset are equal in non-comment cell: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
 						#$output.puts(error)
 						$file_errors.push(error)
+						$file_passed_check = false
 						add_to_failed_check(proj_name)
 					end
 				end
@@ -396,9 +426,14 @@ begin
 			# end
 
 		end
+		if $file_passed_check
+			$passed_check.push(proj_name)
+		end
 	end
 	output_errors()
 	output_failed_check()
+	output_passed_check()
 	puts "Errors written to: " + $out_file
 	puts "List of files failing check: " + $failed_check_path
+	puts "List of files passing check: " + $passed_check_path
 end
