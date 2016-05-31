@@ -4,8 +4,11 @@ include Config
 
 begin
 
-	out_file = File.expand_path("~/code/work/babylab/datavyu_scripts/batch_run_all.txt")
-	$output = File.new(out_file, 'w')
+	$out_file = File.expand_path("~/code/work/babylab/datavyu_scripts/batch_run_all.txt")
+
+
+	$failed_check_path = File.expand_path("~/code/work/babylab/datavyu_scripts/failed_check.csv")
+
 
 	# this is the path you need to set:
 	batch_filedir = File.expand_path("~/code/work/babylab/datavyu_scripts/opffiles")
@@ -18,14 +21,21 @@ begin
 	$valid_utt_type = Array["q", "d", "i", "u", "r", "s", "n", "NA"]
 	$valid_obj_pres = Array["y", "n", "u", "NA"]
 
+	$failed_check = Array.new
+	$file_errors = Array.new
+
 	def checkCodes(cell, proj_name)
 		if not $valid_utt_type.include?(cell.utterance_type.to_s)
-			error = "Cell# "+cell.ordinal.to_s+":  \""+cell.utterance_type.to_s+"\" is not a valid utterance_type code\n"
-			$output.puts("["+proj_name+"]:  " + error)
+			error = "["+proj_name+"]:  " + "Cell# "+cell.ordinal.to_s+":  \""+cell.utterance_type.to_s+"\" is not a valid utterance_type code\n"
+			#$output.puts(error)
+			$file_errors.push(error)
+			add_to_failed_check(proj_name)
 		end
 		if not $valid_obj_pres.include?(cell.object_present.to_s)
-			error = "Cell# "+cell.ordinal.to_s+":  \""+cell.object_present.to_s+"\" is not a valid object_present code\n"
-			$output.puts("["+proj_name+"]:  " + error)
+			error = "["+proj_name+"]:  " + "Cell# "+cell.ordinal.to_s+":  \""+cell.object_present.to_s+"\" is not a valid object_present code\n"
+			#$output.puts(error)
+			$file_errors.push(error)
+			add_to_failed_check(proj_name)
 		end
 	end
 
@@ -36,12 +46,36 @@ begin
 
 	def check_mwu(cell, proj_name)
 		if cell.object_present.to_s != "NA"
-			error = "Cell# " + cell.ordinal.to_s + ":  object_present must be NA in \"%com: mwu\" cell"
-			$output.puts("["+proj_name+"]:  " + error)
+			error = "["+proj_name+"]:  " + "Cell# " + cell.ordinal.to_s + ":  object_present must be NA in \"%com: mwu\" cell"
+			#$output.puts(error)
+			$file_errors.push(error)
+			add_to_failed_check(proj_name)
 		end
 		if cell.speaker.to_s != "NA"
-			error = "Cell# " + cell.ordinal.to_s + ":  speaker must be NA in \"%com: mwu\" cell"
-			$output.puts("["+proj_name+"]:  " + error)
+			error = "["+proj_name+"]:  " + "Cell# " + cell.ordinal.to_s + ":  speaker must be NA in \"%com: mwu\" cell"
+			#$output.puts(error)
+			$file_errors.push(error)
+			add_to_failed_check(proj_name)
+		end
+	end
+
+	def add_to_failed_check(proj_name)
+		if !$failed_check.include?(proj_name)
+			$failed_check.push(proj_name)
+		end
+	end
+
+	def output_failed_check()
+		failed_check_file = File.new($failed_check_path, "w")
+		for file in $failed_check
+			failed_check_file.puts(file)
+		end
+	end
+
+	def output_errors()
+		output = File.new($out_file, 'w')
+		for error in $file_errors
+			output.puts(error)
 		end
 	end
 
@@ -84,50 +118,64 @@ begin
 					checkCodes(cell, proj_name)
 
 					if cell.speaker.to_s.length != 3 && cell.speaker.to_s != "NA"
-						error = "check codes: (3 letter code required): [Column]: "+column+"  [Variable]: speaker\t[Cell]# : "+\
+						error = "["+proj_name+"]:  " + "check codes: (3 letter code required): [Column]: "+column+"  [Variable]: speaker\t[Cell]# : "+\
 							cell.ordinal.to_s + "  [Current Value]: " + cell.speaker
-							$output.puts("["+proj_name+"]:  " + error)
+							#$output.puts(error)
+							$file_errors.push(error)
+							add_to_failed_check(proj_name)
 					end
 
 					# Speaker code has to be all uppercase
 					if !is_uppercase(cell.speaker.to_s) && !cell.object.to_s.start_with?("%com:")
-						error = "check codes: speaker code must be uppercase: [Column]: " + column + " [Cell]# : "+\
+						error = "["+proj_name+"]:  " + "check codes: speaker code must be uppercase: [Column]: " + column + " [Cell]# : "+\
 						cell.ordinal.to_s
-						$output.puts("["+proj_name+"]:  " + error)
+						#$output.puts(error)
+						$file_errors.push(error)
+						add_to_failed_check(proj_name)
 					end
 
 					# object_present needs to be single character and lowercase
 					if (cell.object_present.to_s.length != 1) && !cell.object.to_s.start_with?("%com:")
-						error = "check codes: object_present needs to be a single character: [Column]: " + column + " [Cell]# : "+\
+						error = "["+proj_name+"]:  " + "check codes: object_present needs to be a single character: [Column]: " + column + " [Cell]# : "+\
 						cell.ordinal.to_s
-						$output.puts("["+proj_name+"]:  " + error)
+						#$output.puts(error)
+						$file_errors.push(error)
+						add_to_failed_check(proj_name)
 					end
 
 					if is_uppercase(cell.object_present.to_s) && !cell.object.to_s.start_with?("%com:")
-						error = "check codes: object_present needs to be lower case: [Column]: " + column + " [Cell]# : "+\
+						error = "["+proj_name+"]:  " + "check codes: object_present needs to be lower case: [Column]: " + column + " [Cell]# : "+\
 						cell.ordinal.to_s
-						$output.puts("["+proj_name+"]:  " + error)
+						#$output.puts(error)
+						$file_errors.push(error)
+						add_to_failed_check(proj_name)
 					end
 
 					# utterance_type needs to be single character and lowercase
 					if (cell.utterance_type.to_s.length != 1) && !cell.object.to_s.start_with?("%com:")
-						error = "check codes: utterance_type needs to be a single character: [Column]: " + column + " [Cell]# : "+\
+						error = "["+proj_name+"]:  " + "check codes: utterance_type needs to be a single character: [Column]: " + column + " [Cell]# : "+\
 						cell.ordinal.to_s
-						$output.puts("["+proj_name+"]:  " + error)
+						#$output.puts(error)
+						$file_errors.push(error)
+						add_to_failed_check(proj_name)
 					end
 
 					if is_uppercase(cell.utterance_type.to_s) && !cell.object.to_s.start_with?("%com:")
-						error = "check codes: utterance_type needs to be lower case: [Column]: " + column + " [Cell]# : "+\
+						error = "["+proj_name+"]:  " + "check codes: utterance_type needs to be lower case: [Column]: " + column + " [Cell]# : "+\
 						cell.ordinal.to_s
-						$output.puts("["+proj_name+"]:  " + error)
+						#$output.puts(error)
+						$file_errors.push(error)
+						add_to_failed_check(proj_name)
 					end
 
 					split_object = cell.object.to_s.split("+")
 					if split_object.length > 1
 						for word in split_object[1..-1]
 							if is_uppercase(word[0].chr)
-								error = "check codes: only the first word in a multi-word object can be uppercase: [Cell]# : "+ cell.ordinal.to_s
-								$output.puts("["+proj_name+"]:  " + error)
+								error = "["+proj_name+"]:  " + "check codes: only the first word in a multi-word object can be uppercase: [Cell]# : "+ cell.ordinal.to_s
+								#$output.puts(error)
+								$file_errors.push(error)
+								add_to_failed_check(proj_name)
 							end
 						end
 					end
@@ -136,23 +184,29 @@ begin
 					cell.argvals.each_with_index { |code, i|
 						# codes can't be empty
 						if code == ""
-							error = "check_codes (Found empty code): [Column]: " + column+\
+							error = "["+proj_name+"]:  " + "check_codes (Found empty code): [Column]: " + column+\
 								"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
-								$output.puts("["+proj_name+"]:  " + error)
+								#$output.puts(error)
+								$file_errors.push(error)
+								add_to_failed_check(proj_name)
 						end
 
 						# "NA" needs to be all uppercase
 						if code == "na" || code =="nA" || code == "Na"
-							error = "check_codes: NA needs to be uppercase: [Column]: " + column+\
+							error = "["+proj_name+"]:  " + "check_codes: NA needs to be uppercase: [Column]: " + column+\
 								"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
-								$output.puts("["+proj_name+"]:  " + error)
+								#$output.puts(error)
+								$file_errors.push(error)
+								add_to_failed_check(proj_name)
 						end
 
 						# codes cannot contain space, unless it's inside comment
 						if !code.start_with?("%com:") and code.match(/\s/)
-							error = "check_codes: code cannot contain space: [Column]: " + column+\
+							error = "["+proj_name+"]:  " + "check_codes: code cannot contain space: [Column]: " + column+\
 								"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
-								$output.puts("["+proj_name+"]:  " + error)
+								#$output.puts(error)
+								$file_errors.push(error)
+								add_to_failed_check(proj_name)
 						end
 					}
 				end
@@ -177,22 +231,28 @@ begin
 										if cell.object.to_s.start_with?("%com: mwu")
 											next
 										end
-		                error = "comments ERROR: one of the values is not \"NA\": [Column] "	 + column + "[Cell#]: " + cell.ordinal.to_s
-										$output.puts("["+proj_name+"]:  " + error)
+		                error = "["+proj_name+"]:  " + "comments ERROR: one of the values is not \"NA\": [Column] "	 + column + "[Cell#]: " + cell.ordinal.to_s
+										#$output.puts(error)
+										$file_errors.push(error)
+										add_to_failed_check(proj_name)
 
 		                if (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information"))
 		                  diff = cell.offset - cell.onset
 		                  if diff.abs <= 1
 		                    next
 		                  end
-		                    error = "comments ERROR: onset and offset are not equal: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
-												$output.puts("["+proj_name+"]:  " + error)
+		                    error = "["+proj_name+"]:  " + "comments ERROR: onset and offset are not equal: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
+												#$output.puts(error)
+												$file_errors.push(error)
+												add_to_failed_check(proj_name)
 		                end
 
 		            elsif (cell.object.to_s.start_with?("%com:") &&
 		                   (cell.onset != cell.offset) && !(cell.object.to_s.include?("personal information")))
-		                error = "comments ERROR: onset and offset are not equal: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
-										$output.puts("["+proj_name+"]:  " + error)
+		                error = "["+proj_name+"]:  " + "comments ERROR: onset and offset are not equal: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
+										#$output.puts(error)
+										$file_errors.push(error)
+										add_to_failed_check(proj_name)
 		            end
 		        end
 			end
@@ -208,13 +268,17 @@ begin
 				for cell in col.cells
 
 					if cell.onset > cell.offset
-						error = "intervals ERROR: onset is greater than offset: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
-						$output.puts("["+proj_name+"]:  " + error)
+						error = "["+proj_name+"]:  " + "intervals ERROR: onset is greater than offset: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
+						#$output.puts(error)
+						$file_errors.push(error)
+						add_to_failed_check(proj_name)
 
 					end
 					if !cell.object.to_s.start_with?("%com") && (cell.onset == cell.offset)
-						error = "intervals ERROR: onset and offset are equal in non-comment cell: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
-						$output.puts("["+proj_name+"]:  " + error)
+						error = "["+proj_name+"]:  " + "intervals ERROR: onset and offset are equal in non-comment cell: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
+						#$output.puts(error)
+						$file_errors.push(error)
+						add_to_failed_check(proj_name)
 					end
 				end
 			end
@@ -333,5 +397,8 @@ begin
 
 		end
 	end
-	puts "Errors written to: " + out_file
+	output_errors()
+	output_failed_check()
+	puts "Errors written to: " + $out_file
+	puts "List of files failing check: " + $failed_check_path
 end
