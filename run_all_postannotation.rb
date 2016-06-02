@@ -248,9 +248,11 @@ begin
             if (entry.start_with?("%com: personal info"))
                 if (entry.include?("[audio]"))
                     audio_regions.push([cell.onset, cell.offset])
-                elsif (entry.include?("[video]"))
+								end
+                if (entry.include?("[video]"))
                     video_regions.push([cell.onset, cell.offset])
-                else
+								end
+                if (!(entry.include?("[audio]") || entry.include?("[video]")))
                     puts "Malformed personal information comment:  cell#: " + cell.ordinal.to_s
                 end
             end
