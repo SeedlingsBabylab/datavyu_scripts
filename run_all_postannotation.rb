@@ -1,4 +1,4 @@
-require 'Datavyu_API.rb'
+1require 'Datavyu_API.rb'
 require 'rbconfig'
 include Config
 
@@ -218,7 +218,7 @@ begin
 	when /mswin|windows/i
 		no_persinfo_file_path = File.join(split_path[0], "Scripts_and_Apps/no_personal_info.txt")
 	else
-		no_persinfo_file_path = "/Volumes/seedlings/Scripts_and_Apps/no_personal_info.txt"
+		no_persinfo_file_path = "/Volumes/pn-opus/Seedlings/Scripts_and_Apps/no_personal_info.txt"
 	end
 	#puts output_path
 	#output = File.expand_path(output_path)
