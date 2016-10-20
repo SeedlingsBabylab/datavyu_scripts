@@ -1,4 +1,4 @@
-1require 'Datavyu_API.rb'
+require 'Datavyu_API.rb'
 require 'rbconfig'
 include Config
 
