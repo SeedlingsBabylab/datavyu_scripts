@@ -1,6 +1,9 @@
 require 'Datavyu_API.rb'
 begin
 	column = "labeled_object"	# set this as necessary
+	allColumns = getColumnList()
+	column = allColumns[0]
+	puts column
 	col = getColumn(column)
 	child_column = createNewColumn("child_labeled_object", "object","utterance_type","object_present","speaker")
 	for cell in col.cells

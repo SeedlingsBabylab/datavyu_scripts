@@ -1,8 +1,9 @@
 require 'Datavyu_API.rb'
 begin
-	child_column = "child_labeled_object"	# set this as necessary
+	child_column = "child_labeled_object"	# set in get_child.rb
 	child_col = getColumn(child_column)
-	full_column = "labeled_object"
+	allColumns = getColumnList()
+	full_column = allColumns[0]
 	full_col = getColumn(full_column)
 	for child_cell in child_col.cells
 		for cell in full_col.cells
