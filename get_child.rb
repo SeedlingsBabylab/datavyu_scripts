@@ -7,7 +7,7 @@ begin
 	col = getColumn(column)
 	child_column = createNewColumn("child_labeled_object", "object","utterance_type","object_present","speaker")
 	for cell in col.cells
-		if (cell.speaker.to_s == 'CHI') or (cell.object.to_s.start_with?("%com: mwu")) or (cell.object.to_s.start_with?("%com: first word: word"))
+		if (cell.speaker.to_s == 'CHI') or (cell.object.to_s.start_with?("%com: mwu")) or (cell.object.to_s.start_with?("%com: first word"))
 			newcell = child_column.make_new_cell()
 			newcell.change_code("object", cell.object)
 			newcell.change_code("utterance_type", cell.utterance_type)
