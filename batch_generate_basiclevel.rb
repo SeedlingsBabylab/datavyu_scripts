@@ -11,7 +11,7 @@ begin
   filedir = File.expand_path("~/code/work/babylab/opf_files")
   filenames = Dir.new(filedir).entries
 
-  csv_dir = File.expand_path("~/code/work/babylab/batch_basic_level")
+  csv_dir = File.expand_path("~/code/work/babylab/batch_basic_level_video")
   #pinfo_dir = File.expand_path("~/code/work/babylab/opffiles/personal_info_files")
   #no_persinfo_file_path = File.expand_path("~/code/work/babylab/opffiles/personal_info_files/batch_no_personal_info.csv")
 
@@ -24,7 +24,7 @@ begin
 
       # pinfo_output_path = pinfo_dir + File::SEPARATOR + $pj.getProjectName() + "_personal_info.csv"
       # basic_level_output_path = csv_dir + File::SEPARATOR + $pj.getProjectName() + "_newmerge.csv"
-      basic_level_output_path = File.join(csv_dir, $pj.getProjectName() + "_newmerge.csv")
+      basic_level_output_path = File.join(csv_dir, $pj.getProjectName() + "_processed.csv")
 
       for column in columns
           col = getColumn(column)
