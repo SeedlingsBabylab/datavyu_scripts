@@ -33,6 +33,14 @@ def merge(output)
   for child_cell in child_col.cells
     # add to list of new ordinals (what's left after deleting cells)
     new_set.push(child_cell.cell_number.to_s)
+    if child_cell.cell_number.to_s == "NEW"
+			new_cell = full_col.make_new_cell()
+			full_col.arglist.each do |code|
+				new_cell.change_arg(code, child_cell.get_arg(code)) if child_cell.arglist.include?(code)
+			end
+			new_cell.onset = child_cell.onset
+			new_cell.offset = child_cell.offset
+		end
     for cell in full_col.cells
       if (child_cell.cell_number.to_s == cell.ordinal.to_s)
         cell.change_code("object", child_cell.object)
