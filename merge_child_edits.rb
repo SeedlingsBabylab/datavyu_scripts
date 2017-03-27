@@ -5,7 +5,20 @@ begin
 	allColumns = getColumnList()
 	full_column_name = allColumns[0]
 	full_col = getColumn(full_column_name)
+
+	original_set = Array.new()
+	new_set = Array.new()
+
+	for cell in full_col.cells
+		if (cell.speaker.to_s == 'CHI') or
+			(cell.object.to_s.start_with?("%com: mwu")) or
+			(cell.object.to_s.start_with?("%com: first word"))
+			original_set.push(cell.ordinal.to_s)
+		end
+	end
+
 	for child_cell in child_col.cells
+		new_set.push(child_cell.cell_number.to_s)
 		for cell in full_col.cells
 			if (child_cell.cell_number.to_s == cell.ordinal.to_s)
 				cell.change_code("object", child_cell.object)
@@ -18,5 +31,17 @@ begin
     end
   end
 	deleteVariable(child_col)
-  setColumn(full_col)
+	setColumn(full_col)
+
+	diff = original_set - new_set # set of deleted cells
+
+	puts diff
+
+	# delete the deleted cells from the original column
+	for num in diff
+		found = full_col.cells.find{|x| x.ordinal.to_s == num}
+		deleteCell(found)
+		setColumn(full_col)
+	end
+
 end
