@@ -7,14 +7,13 @@ def check_format(child_col)
 	for cell in child_col.cells
 		if cell.object.to_s.start_with?("%pho:")
 			if cell.onset != cell.offset
-				puts("pho cell at ordinal #{cell.ordinal} in child utteranc column has mismatched onset/offset")
+				puts("pho cell at ordinal #{cell.ordinal} in child utterance column has mismatched onset/offset")
 				found_err = true
 			end
 		end
 	end
 	return found_err
 end
-
 
 begin
 	child_column_name = "child_labeled_object"	# set in get_child.rb
@@ -47,6 +46,7 @@ begin
 			new_cell.onset = child_cell.onset
 			new_cell.offset = child_cell.offset
 		end
+
 		for cell in full_col.cells
 			if (child_cell.cell_number.to_s == cell.ordinal.to_s)
 				cell.change_code("object", child_cell.object)
@@ -58,6 +58,7 @@ begin
       end
     end
   end
+
 	delete_variable(child_col)
 	set_column(full_col)
 

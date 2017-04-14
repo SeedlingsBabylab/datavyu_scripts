@@ -1,6 +1,5 @@
 require 'Datavyu_API.rb'
 begin
-	column = "labeled_object"	# set this as necessary
 	allColumns = get_column_list()
 	column = allColumns[0]
 	puts column
