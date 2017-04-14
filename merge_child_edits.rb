@@ -1,10 +1,11 @@
 require 'Datavyu_API.rb'
+
 begin
 	child_column_name = "child_labeled_object"	# set in get_child.rb
-	child_col = getColumn(child_column_name)
-	allColumns = getColumnList()
+	child_col = get_column(child_column_name)
+	allColumns = get_column_list()
 	full_column_name = allColumns[0]
-	full_col = getColumn(full_column_name)
+	full_col = get_column(full_column_name)
 
 	original_set = Array.new()
 	new_set = Array.new()
@@ -20,10 +21,7 @@ begin
 	for child_cell in child_col.cells
 		new_set.push(child_cell.cell_number.to_s)
 		if child_cell.cell_number.to_s == "NEW"
-			new_cell = full_col.make_new_cell()
-			full_col.arglist.each do |code|
-				new_cell.change_arg(code, child_cell.get_arg(code)) if child_cell.arglist.include?(code)
-			end
+			new_cell = full_col.make_new_cell(child_cell)
 			new_cell.onset = child_cell.onset
 			new_cell.offset = child_cell.offset
 		end
@@ -38,8 +36,8 @@ begin
       end
     end
   end
-	deleteVariable(child_col)
-	setColumn(full_col)
+	delete_variable(child_col)
+	set_column(full_col)
 
 	diff = original_set - new_set # set of deleted cells
 
@@ -48,8 +46,8 @@ begin
 	# delete the deleted cells from the original column
 	for num in diff
 		found = full_col.cells.find{|x| x.ordinal.to_s == num}
-		deleteCell(found)
-		setColumn(full_col)
+		delete_cell(found)
+		set_column(full_col)
 	end
 
 end
