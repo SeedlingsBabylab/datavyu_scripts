@@ -1,5 +1,21 @@
 require 'Datavyu_API.rb'
 
+
+
+def check_format(child_col)
+	found_err = false
+	for cell in child_col.cells
+		if cell.object.to_s.start_with?("%pho:")
+			if cell.onset != cell.offset
+				puts("pho cell at ordinal #{cell.ordinal} in child utteranc column has mismatched onset/offset")
+				found_err = true
+			end
+		end
+	end
+	return found_err
+end
+
+
 begin
 	child_column_name = "child_labeled_object"	# set in get_child.rb
 	child_col = get_column(child_column_name)
@@ -9,6 +25,12 @@ begin
 
 	original_set = Array.new()
 	new_set = Array.new()
+
+	messed_up = check_format(child_col)
+
+	if messed_up
+		exit
+	end
 
 	for cell in full_col.cells
 		if (cell.speaker.to_s == 'CHI') or
