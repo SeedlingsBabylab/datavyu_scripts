@@ -3,3 +3,7 @@
 .idea
 .ropeproject
 opffiles
+*.txt
+*.opf
+*.csv
+.tags

@@ -3,13 +3,13 @@ require 'rbconfig'
 include Config
 
 begin
-  out_file = File.expand_path("~/code/work/babylab/datavyu_scripts/data/batch_persinfo.txt")
+  out_file = File.expand_path("~/code/work/seedlings/datavyu_scripts/data/batch_persinfo.txt")
   out = File.new(out_file, 'w')
 
-  filedir = File.expand_path("~/code/work/babylab/opffiles")
+  filedir = File.expand_path("~/code/work/seedlings/opffiles_bymonth/07")
   filenames = Dir.new(filedir).entries
-  pinfo_dir = File.expand_path("~/code/work/babylab/opffiles/personal_info_files")
-  no_persinfo_file_path = File.expand_path("~/code/work/babylab/opffiles/personal_info_files/batch_no_personal_info.csv")
+  pinfo_dir = File.expand_path("~/code/work/seedlings/opffiles_bymonth/personal_info_files/07")
+  no_persinfo_file_path = File.expand_path("~/code/work/seedlings/opffiles_bymonth/personal_info_files/07/batch_no_personal_info.csv")
 
   for file in filenames
     if file.include?(".opf")
