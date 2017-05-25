@@ -10,15 +10,22 @@ begin
   columns = get_column_list()
   for column in columns
     col = get_column(column)
+
     annotation_cells = col.cells.select do |elem|
-      !elem.object.to_s.start_with? "%"
+      (!elem.object.to_s.start_with? "%") && !(elem.speaker.to_s == "CHI")
     end
 
+    chi_cells = col.cells.select do |elem|
+      elem.speaker == "CHI"
+    end
 
-    n = (annotation_cells.size * $percent).ceil
+    old_n = (annotation_cells.size * $percent).ceil
+    not_n = (chi_cells.size * $percent).ceil
+    n = old_n - not_n
+
     start = rand(0..annotation_cells.size-n)
     randrange = annotation_cells.size-1-n
-    puts("numcells: #{annotation_cells.size}  randrange: #{randrange}  n: #{n}   start: #{start}   end: #{start+n} ")
+    puts("numcells: #{annotation_cells.size}  numchicells: #{chi_cells.size}   randrange: #{randrange}  n: #{n}  not_n: #{not_n}  old_n: #{old_n}   start: #{start}   end: #{start+n} ")
 
     recode_slice = annotation_cells[start..start+(n-1)]
 

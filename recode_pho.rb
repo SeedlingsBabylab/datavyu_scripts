@@ -14,6 +14,7 @@ begin
     annotation_cells = col.cells.select do |elem|
       elem.object.to_s.start_with? "%pho"
     end
+
     if annotation_cells.empty?
       next
     end
@@ -27,6 +28,16 @@ begin
 
     new_column = create_new_column("recode_pho", "object", "utterance_type","object_present","speaker")
     for cell in recode_slice
+      parent = col.cells[cell.ordinal-2]
+      parent_chi = new_column.make_new_cell()
+      parent_chi.change_code("object", parent.object)
+      parent_chi.change_code("utterance_type", "NA")
+      parent_chi.change_code("object_present", "NA")
+      parent_chi.change_code("speaker", parent.speaker)
+      parent_chi.change_code("onset", parent.onset)
+      parent_chi.change_code("offset", parent.offset)
+
+
       newcell = new_column.make_new_cell()
       newcell.change_code("object", "%pho: ")
       newcell.change_code("onset", cell.onset)

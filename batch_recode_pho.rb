@@ -3,8 +3,9 @@ require 'Datavyu_API'
 
 $percent = 0.10
 
-$input_dir  = "~/code/work/bergelsonlab/pho_checks_in"
+$input_dir  = "~/code/work/bergelsonlab/pho_checks_in_2"
 $output_dir = "~/code/work/bergelsonlab/pho_checks_out"
+$original_out = "~/code/work/bergelsonlab/pho_check_out_orig"
 
 
 def recode(in_dir, file)
@@ -31,13 +32,21 @@ def recode(in_dir, file)
     randrange = annotation_cells.size-1-n
     # puts("numcells: #{annotation_cells.size}  randrange: #{randrange}  n: #{n}   start: #{start}   end: #{start+n} ")
 
-
     recode_slice = annotation_cells[start..start+(n-1)]
 
     new_column = create_new_column("recode_pho", "object",
                                    "utterance_type","object_present",
                                    "speaker")
     for cell in recode_slice
+      parent = col.cells[cell.ordinal-2]
+      parent_chi = new_column.make_new_cell()
+      parent_chi.change_code("object", parent.object)
+      parent_chi.change_code("utterance_type", "NA")
+      parent_chi.change_code("object_present", "NA")
+      parent_chi.change_code("speaker", parent.speaker)
+      parent_chi.change_code("onset", parent.onset)
+      parent_chi.change_code("offset", parent.offset)
+
       newcell = new_column.make_new_cell()
       newcell.change_code("object", "%pho: ")
       newcell.change_code("onset", cell.onset)
@@ -53,6 +62,34 @@ def recode(in_dir, file)
     end
     set_column(new_column)
     save_db(File.join(File.expand_path($output_dir), file.sub(".opf", "_recode.opf")))
+    delete_variable(new_column)
+
+    # output the original annotations to a separate opf
+    new_column = create_new_column("recode_pho", "object",
+                                   "utterance_type","object_present",
+                                   "speaker")
+
+   for cell in recode_slice
+     parent = col.cells[cell.ordinal-2]
+     parent_chi = new_column.make_new_cell()
+     parent_chi.change_code("object", parent.object)
+     parent_chi.change_code("utterance_type", parent.utterance_type)
+     parent_chi.change_code("object_present", parent.object_present)
+     parent_chi.change_code("speaker", parent.speaker)
+     parent_chi.change_code("onset", parent.onset)
+     parent_chi.change_code("offset", parent.offset)
+
+     newcell = new_column.make_new_cell()
+     newcell.change_code("object", cell.object)
+     newcell.change_code("onset", cell.onset)
+     newcell.change_code("offset", cell.offset)
+     newcell.change_code("utterance_type", cell.utterance_type)
+     newcell.change_code("speaker", cell.speaker)
+     newcell.change_code("object_present", cell.object_present)
+   end
+
+   set_column(new_column)
+   save_db(File.join(File.expand_path($original_out), file.sub(".opf", "_recode_orig.opf")))
 
   end
 end
