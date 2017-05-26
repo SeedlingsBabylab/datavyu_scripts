@@ -1,8 +1,21 @@
 require 'Datavyu_API'
 
 
-$input_dir = "~/code/work/seedlings/recode_converge_opfs"
-$output_dir = "~/code/work/seedlings/converge_opfs"
+$input_dir = "~/code/work/seedlings/reliability_data/recode_converge_opfs"
+$output_dir = "~/code/work/seedlings/reliability_data/converge_opfs"
+
+
+
+
+def cells_equal(cell1, cell2)
+  if cell1.get_codes() == cell2.get_codes() &&
+    cell1.ordinal == cell2.ordinal &&
+    cell1.onset == cell2.onset && cell1.offset == cell2.offset
+    return true
+  else
+    return false
+  end
+end
 
 
 
@@ -10,28 +23,59 @@ def combine(in_dir, groups)
 
   groups.each_value { |files|
 
+    prefix = files["orig"][0..4]
+    puts("****************************#{prefix}*********")
+
     $db, $pj = load_db(File.join(in_dir, files["recode"]))
     recode_col = get_column("recode")
 
     $db, $pj = load_db(File.join(in_dir, files["orig"]))
     orig_col = get_column("recode")
-    orig_col.name = "original"
-    set_column(orig_col)
 
-    new_column = create_new_column("recode", "object", "utterance_type","object_present","speaker")
-    for cell in recode_col.cells
-      newcell = new_column.make_new_cell()
-			newcell.change_code("object", cell.object)
-			newcell.change_code("utterance_type", cell.utterance_type)
-			newcell.change_code("object_present", cell.object_present)
-			newcell.change_code("speaker", cell.speaker)
-			newcell.change_code("onset", cell.onset)
-			newcell.change_code("offset", cell.offset)
-			newcell.change_code("ordinal", cell.ordinal)
+    new_orig_col = create_new_column("original", "object", "utterance_type","object_present","speaker", "original_ordinal")
+    new_recode_col = create_new_column("recode", "object", "utterance_type","object_present","speaker", "original_ordinal")
+    for cell in orig_col.cells
+      found_match = false
+
+      for reco_cell in recode_col.cells
+        # puts("#{cell.get_codes()}\n#{reco_cell.get_codes()}\n\n")
+        if cells_equal(cell, reco_cell)
+          puts("#{cell.get_codes()}\n#{reco_cell.get_codes()}\n\n")
+          puts("found a match\n\n")
+          found_match = true
+          break
+        end
+      end
+
+      if !found_match
+        newcell = new_orig_col.make_new_cell()
+  			newcell.change_code("object", cell.object)
+  			newcell.change_code("utterance_type", cell.utterance_type)
+  			newcell.change_code("object_present", cell.object_present)
+  			newcell.change_code("speaker", cell.speaker)
+  			newcell.change_code("onset", cell.onset)
+  			newcell.change_code("offset", cell.offset)
+  			newcell.change_code("ordinal", cell.ordinal)
+        newcell.change_code("original_ordinal", cell.original_ordinal)
+
+        not_matched = recode_col.cells[cell.ordinal-1]
+        newrecode = new_recode_col.make_new_cell()
+  			newrecode.change_code("object", not_matched.object)
+  			newrecode.change_code("utterance_type", not_matched.utterance_type)
+  			newrecode.change_code("object_present", not_matched.object_present)
+  			newrecode.change_code("speaker", not_matched.speaker)
+  			newrecode.change_code("onset", not_matched.onset)
+  			newrecode.change_code("offset", not_matched.offset)
+  			newrecode.change_code("ordinal", not_matched.ordinal)
+        newrecode.change_code("original_ordinal", not_matched.original_ordinal)
+      end
     end
-    set_column(new_column)
-    prefix = files["orig"][0..4]
-    puts(prefix)
+
+    delete_variable(orig_col)
+    set_column(new_orig_col)
+    set_column(new_recode_col)
+
+
     save_db(File.join(File.expand_path($output_dir), "#{prefix}_converge_rel.opf"))
   }
 

@@ -1,6 +1,6 @@
 require 'Datavyu_API'
 
-$input_dir = "~/code/work/seedlings/batch_recode_out"
+$input_dir = "~/code/work/seedlings/reliability_data/batch_recode_out"
 $output_dir = "~/code/work/seedlings/batch_opf_bl"
 
 

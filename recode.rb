@@ -2,7 +2,7 @@ require 'Datavyu_API'
 
 $percent = 0.10
 
-$output_folder = "~/code/work/seedlings/recode_output"
+$output_folder = "~/code/work/seedlings/reliability_data/recode_output"
 
 
 

@@ -2,9 +2,9 @@ require 'Datavyu_API'
 
 $percent = 0.10
 
-$input_dir  = "~/code/work/seedlings/batch_recode_in"
-$output_dir = "~/code/work/seedlings/batch_recode_out"
-$original_out = "~/code/work/seedlings/batch_recode_orig_out"
+$input_dir  = "~/code/work/seedlings/reliability_data/batch_recode_in"
+$output_dir = "~/code/work/seedlings/reliability_data/batch_recode_out"
+$original_out = "~/code/work/seedlings/reliability_data/batch_recode_orig_out"
 
 
 
@@ -37,7 +37,7 @@ def recode(in_dir, file)
 
 
     # output the blank recode opf's
-    new_column = create_new_column("recode", "object", "utterance_type","object_present","speaker")
+    new_column = create_new_column("recode", "object", "utterance_type","object_present","speaker", "original_ordinal")
     for cell in recode_slice
       newcell = new_column.make_new_cell()
 			newcell.change_code("object", cell.object)
@@ -47,6 +47,7 @@ def recode(in_dir, file)
 			newcell.change_code("onset", cell.onset)
 			newcell.change_code("offset", cell.offset)
 			newcell.change_code("ordinal", cell.ordinal)
+      newcell.change_code("original_ordinal", cell.ordinal)
     end
 
     set_column(new_column)
@@ -57,7 +58,7 @@ def recode(in_dir, file)
 
 
     # output the original annotations to a separate opf
-    new_column = create_new_column("recode", "object", "utterance_type","object_present","speaker")
+    new_column = create_new_column("recode", "object", "utterance_type","object_present","speaker", "original_ordinal")
     for cell in recode_slice
       newcell = new_column.make_new_cell()
 			newcell.change_code("object", cell.object)
@@ -67,6 +68,7 @@ def recode(in_dir, file)
 			newcell.change_code("onset", cell.onset)
 			newcell.change_code("offset", cell.offset)
 			newcell.change_code("ordinal", cell.ordinal)
+      newcell.change_code("original_ordinal", cell.ordinal)
     end
 
     set_column(new_column)
