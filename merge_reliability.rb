@@ -1,5 +1,8 @@
 require 'Datavyu_API'
 
+$input_dir = "~/code/work/seedlings/reliability_data/recode_merging"
+$output_dir = "~/code/work/seedlings/reliability_data/final_out"
+
 
 def merge(in_dir, groups)
   groups.each_value { |files|
@@ -12,16 +15,23 @@ def merge(in_dir, groups)
     $db, $pj = load_db(File.join(in_dir, files["orig"]))
 
     cols = get_column_list()
+
     if cols.length != 1
       puts("\n#{files["orig"]} has more than 1 column\n\n")
       exit
     else
-      orig_column = cols[0]
+      col = cols[0]
+      orig_column = get_column(col)
     end
 
+    for cell in conv_col.cells
+      puts(cell.original_ordinal)
+      orig_column.cells[cell.original_ordinal.to_i-1]
+    end
 
+    set_column(orig_column)
 
-
+    save_db(File.join(File.expand_path($output_dir), File.basename(files["orig"])))
   }
 end
 
@@ -52,6 +62,6 @@ begin
     end
   end
   puts(groups)
-  combine(in_dir, groups)
+  merge(in_dir, groups)
 
 end
