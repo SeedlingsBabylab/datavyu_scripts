@@ -1,7 +1,7 @@
 require 'Datavyu_API'
 
-$input_dir = "~/code/work/seedlings/reliability_data/recode_merging"
-$output_dir = "~/code/work/seedlings/reliability_data/final_out"
+$input_dir = "~/code/work/seedlings/reliability_data/real_runs/video/06/recode_merging"
+$output_dir = "~/code/work/seedlings/reliability_data/real_runs/video/06/final_out"
 
 
 def merge(in_dir, groups)
@@ -26,7 +26,19 @@ def merge(in_dir, groups)
 
     for cell in conv_col.cells
       puts(cell.original_ordinal)
-      orig_column.cells[cell.original_ordinal.to_i-1]
+      for c in orig_column.cells
+        if c.ordinal == cell.original_ordinal.to_i
+          orig_cell = c
+        end
+      end
+      # orig_cell = orig_column.cells[cell.original_ordinal.to_i-1]
+      orig_cell.change_code("object", cell.object)
+      orig_cell.change_code("utterance_type", cell.utterance_type)
+      orig_cell.change_code("object_present", cell.object_present)
+      orig_cell.change_code("speaker", cell.speaker)
+      orig_cell.change_code("onset", cell.onset)
+      orig_cell.change_code("offset", cell.offset)
+      # newcell.change_code("ordinal", cell.ordinal)
     end
 
     set_column(orig_column)

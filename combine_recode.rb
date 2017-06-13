@@ -1,8 +1,9 @@
 require 'Datavyu_API'
 
 
-$input_dir = "~/code/work/seedlings/reliability_data/recode_converge_opfs"
-$output_dir = "~/code/work/seedlings/reliability_data/converge_opfs"
+$input_dir = "~/code/work/seedlings/reliability_data/real_runs/video/06/recode_and_orig2"
+$output_dir = "~/code/work/seedlings/reliability_data/real_runs/video/06/converge_out2"
+
 
 
 
@@ -40,8 +41,8 @@ def combine(in_dir, groups)
       for reco_cell in recode_col.cells
         # puts("#{cell.get_codes()}\n#{reco_cell.get_codes()}\n\n")
         if cells_equal(cell, reco_cell)
-          puts("#{cell.get_codes()}\n#{reco_cell.get_codes()}\n\n")
-          puts("found a match\n\n")
+          # puts("#{cell.get_codes()}\n#{reco_cell.get_codes()}\n\n")
+          # puts("found a match\n\n")
           found_match = true
           break
         end
@@ -75,8 +76,9 @@ def combine(in_dir, groups)
     set_column(new_orig_col)
     set_column(new_recode_col)
 
-
-    save_db(File.join(File.expand_path($output_dir), "#{prefix}_converge_rel.opf"))
+    if (new_recode_col.size != 0)
+      save_db(File.join(File.expand_path($output_dir), "#{prefix}_converge_rel.opf"))
+    end
   }
 
 end
@@ -108,5 +110,6 @@ begin
   end
   puts(groups)
   combine(in_dir, groups)
+
 
 end
