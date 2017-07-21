@@ -223,7 +223,7 @@ begin
 	#puts output_path
 	#output = File.expand_path(output_path)
 
-	no_pi = IO.readlines(no_persinfo_file_path)
+	# no_pi = IO.readlines(no_persinfo_file_path)
 	already_in_nopi = false
 	for element in no_pi
 		if element.include? $pj.getProjectName()
