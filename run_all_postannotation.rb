@@ -224,12 +224,13 @@ begin
 	#output = File.expand_path(output_path)
 
 	# no_pi = IO.readlines(no_persinfo_file_path)
-	already_in_nopi = false
-	for element in no_pi
-		if element.include? $pj.getProjectName()
-			already_in_nopi = true
-		end
-	end
+	# already_in_nopi = false
+	# for element in no_pi
+	# 	if element.include? $pj.getProjectName()
+	# 		already_in_nopi = true
+	# 	end
+	# end
+
 	for column in columns
 
         col = getColumn(column)
@@ -261,12 +262,12 @@ begin
 				used_to_be_nopi = false
 				if already_in_nopi && (!audio_regions.empty? || !video_regions.empty?)
 					used_to_be_nopi = true
-					no_pi.delete($pj.getProjectName())
-					no_pi.delete($pj.getProjectName()+"\n")
+					# no_pi.delete($pj.getProjectName())
+					# no_pi.delete($pj.getProjectName()+"\n")
 
 					File.open(no_persinfo_file_path, 'w') do |f|
 						f.truncate(0)
-						f.puts(no_pi)
+						# f.puts(no_pi)
 					end
 					puts $pj.getProjectName() + " used to have no personal info. It has been removed from the no_personal_info list\n\n"
 				end
