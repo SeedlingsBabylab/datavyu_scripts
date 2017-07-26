@@ -1,8 +1,8 @@
 require 'Datavyu_API'
 
 
-$input_dir = "~/code/work/seedlings/reliability_data/real_runs/video/06/recode_and_orig2"
-$output_dir = "~/code/work/seedlings/reliability_data/real_runs/video/06/converge_out2"
+$input_dir = "~/code/work/seedlings/reliability_data/by_month/07/recode_and_orig_opfs_partial"
+$output_dir = "~/code/work/seedlings/reliability_data/by_month/07/converge_out"
 
 
 
@@ -76,7 +76,7 @@ def combine(in_dir, groups)
     set_column(new_orig_col)
     set_column(new_recode_col)
 
-    if (new_recode_col.size != 0)
+    if (new_recode_col.cells.size != 0)
       save_db(File.join(File.expand_path($output_dir), "#{prefix}_converge_rel.opf"))
     end
   }
