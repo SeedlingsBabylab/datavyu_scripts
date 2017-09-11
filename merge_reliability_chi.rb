@@ -1,11 +1,12 @@
 require 'Datavyu_API'
 
-$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chichecks_recode_merge"
+$origin_in = "~/code/work/seedlings/datavyu_scripts/data/chichecks_orig"
+$recode_in = "~/code/work/seedlings/datavyu_scripts/data/chichecks_combined"
 $output_dir = "~/code/work/seedlings/datavyu_scripts/data/chichecks_finalout"
 
 
 
-def merge(in_dir, groups)
+def merge(orig_in, reco_in, groups)
   groups.each_value { |files|
     prefix = files["orig"][0..4]
     puts("**********#{prefix}*********")
@@ -14,10 +15,10 @@ def merge(in_dir, groups)
       next
     end
 
-    $db, $pj = load_db(File.join(in_dir, files["consensus"]))
+    $db, $pj = load_db(File.join(reco_in, files["consensus"]))
     conv_col = get_column("recode")
 
-    $db, $pj = load_db(File.join(in_dir, files["orig"]))
+    $db, $pj = load_db(File.join(orig_in, files["orig"]))
 
     cols = get_column_list()
 
@@ -62,8 +63,14 @@ end
 
 
 begin
-  in_dir = File.expand_path($input_dir)
-  filenames = Dir.new(in_dir).entries
+
+  orig_in = File.expand_path($origin_in)
+  reco_in = File.expand_path($recode_in)
+
+  orig_files = Dir.new(orig_in).entries
+  reco_files = Dir.new(reco_in).entries
+
+  filenames = orig_files + reco_files
 
   groups = Hash.new
   for file in filenames
@@ -86,6 +93,6 @@ begin
     end
   end
   # puts(groups)
-  merge(in_dir, groups)
+  merge(orig_in, reco_in, groups)
 
 end
