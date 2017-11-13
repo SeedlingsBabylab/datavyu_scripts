@@ -4,14 +4,13 @@ include Config
 
 
 
-input_dir = File.expand_path("~/code/work/seedlings/batch_merge_opf_withedits")
-output_dir = File.expand_path("~/code/work/seedlings/opf_merge_out")
+input_dir = File.expand_path("~/code/work/seedlings/batch_opf_bl/17_chi_2")
+output_dir = File.expand_path("~/code/work/seedlings/batch_opf_bl/17_chi_merged_2")
 
 
 
 
 def merge(output)
-  puts "hello"
   child_column = "child_labeled_object"	# set in get_child.rb
   child_col = getColumn(child_column)
   allColumns = getColumnList()
@@ -30,10 +29,12 @@ def merge(output)
     end
   end
 
+
+
   for child_cell in child_col.cells
     # add to list of new ordinals (what's left after deleting cells)
-    new_set.push(child_cell.cell_number.to_s)
-    if child_cell.cell_number.to_s == "NEW"
+    new_set.push(child_cell.original_ordinal.to_s)
+    if child_cell.original_ordinal.to_s == "NEW"
 			new_cell = full_col.make_new_cell()
 			full_col.arglist.each do |code|
 				new_cell.change_arg(code, child_cell.get_arg(code)) if child_cell.arglist.include?(code)
@@ -42,7 +43,7 @@ def merge(output)
 			new_cell.offset = child_cell.offset
 		end
     for cell in full_col.cells
-      if (child_cell.cell_number.to_s == cell.ordinal.to_s)
+      if (child_cell.original_ordinal.to_s == cell.ordinal.to_s)
         cell.change_code("object", child_cell.object)
         cell.change_code("utterance_type", child_cell.utterance_type)
         cell.change_code("object_present", child_cell.object_present)
@@ -64,6 +65,13 @@ def merge(output)
     found = full_col.cells.find{|x| x.ordinal.to_s == num}
     deleteCell(found)
     setColumn(full_col)
+  end
+
+  for cell in full_col.cells
+    if cell.object.to_s.include?("DELETE")
+      deleteCell(cell)
+      setColumn(full_col)
+    end
   end
 
   # for child_cell in child_col.cells

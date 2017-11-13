@@ -1,13 +1,16 @@
 require 'Datavyu_API'
 
+# $input_dir = "~/code/work/seedlings/reliability_data/real_runs/video/06/recode_merging"
+# $output_dir = "~/code/work/seedlings/reliability_data/real_runs/video/06/final_out"
+
 $input_dir = "~/code/work/seedlings/reliability_data/real_runs/video/06/recode_merging"
 $output_dir = "~/code/work/seedlings/reliability_data/real_runs/video/06/final_out"
-
 
 def merge(in_dir, groups)
   groups.each_value { |files|
     prefix = files["orig"][0..4]
     puts("**********#{prefix}*********")
+
 
     $db, $pj = load_db(File.join(in_dir, files["converge"]))
     conv_col = get_column("recode")

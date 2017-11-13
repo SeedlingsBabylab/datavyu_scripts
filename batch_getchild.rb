@@ -1,8 +1,8 @@
 require 'Datavyu_API.rb'
 
 
-$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chichecks_orig"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chichecks_orig_chiextracted"
+$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/15/original_opfs"
+$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/15/full_with_chi_col"
 
 
 def getchild(in_dir, file)

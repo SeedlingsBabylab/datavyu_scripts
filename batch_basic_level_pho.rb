@@ -15,8 +15,8 @@ require 'Datavyu_API'
 # $input_dir = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/07/orig_rel_10"
 # $output_dir = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/07/csv_out"
 
-$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/13/reliability_checks"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/13/csv_out"
+$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/14/reliability_checks"
+$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/14/csv_out"
 
 # $input_dir = "~/code/work/seedlings/collect/06_opf"
 # $output_dir = "~/code/work/seedlings/collect/06_video_csvs"
@@ -43,10 +43,8 @@ def basic_level(in_dir, file)
         # puts cell.ordinal.to_s
         # puts cell.object.to_s
         # puts "\n\n"
-        if !cell.object.to_s.start_with?("%pho")
           csv << [cell.ordinal.to_s, cell.onset.to_s, cell.offset.to_s, cell.object.to_s,
                   cell.utterance_type.to_s, cell.object_present.to_s, cell.speaker.to_s, ""]
-        end
       end
     end
 

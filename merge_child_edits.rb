@@ -19,7 +19,7 @@ begin
 	child_column_name = "child_labeled_object"	# set in get_child.rb
 	child_col = get_column(child_column_name)
 	allColumns = get_column_list()
-	full_column_name = allColumns[0]
+	full_column_name = "labeled_object"
 	full_col = get_column(full_column_name)
 
 	original_set = Array.new()
@@ -39,25 +39,33 @@ begin
 		end
 	end
 
+	# puts full_col.cells
+
 	for child_cell in child_col.cells
-		new_set.push(child_cell.cell_number.to_s)
-		if child_cell.cell_number.to_s == "NEW"
+		new_set.push(child_cell.original_ordinal.to_s)
+		if child_cell.original_ordinal.to_s == "NEW"
 			new_cell = full_col.make_new_cell(child_cell)
 			new_cell.onset = child_cell.onset
 			new_cell.offset = child_cell.offset
 		end
 
-		for cell in full_col.cells
-			if (child_cell.cell_number.to_s == cell.ordinal.to_s)
-				cell.change_code("object", child_cell.object)
-				cell.change_code("utterance_type", child_cell.utterance_type)
-        cell.change_code("object_present", child_cell.object_present)
-        cell.change_code("speaker", child_cell.speaker)
-				cell.change_code("onset", child_cell.onset)
-				cell.change_code("offset", child_cell.offset)
-      end
-    end
-  end
+		for orig_cell in full_col.cells
+			# puts orig_cell.ordinal.to_s
+			# puts child_cell.original_ordinal.to_s
+			# puts child_cell.original_ordinal.to_s == orig_cell.ordinal.to_s
+			# puts "\n"
+			if child_cell.original_ordinal.to_s == orig_cell.ordinal.to_s
+				puts "found a match"
+				orig_cell.change_code("object", child_cell.object)
+				puts orig_cell.print_all()
+				orig_cell.change_code("utterance_type", child_cell.utterance_type)
+        		orig_cell.change_code("object_present", child_cell.object_present)
+        		orig_cell.change_code("speaker", child_cell.speaker)
+				orig_cell.change_code("onset", child_cell.onset)
+				orig_cell.change_code("offset", child_cell.offset)
+      		end
+    	end
+  	end
 
 	delete_variable(child_col)
 	set_column(full_col)
