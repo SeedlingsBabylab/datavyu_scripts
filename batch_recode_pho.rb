@@ -3,9 +3,9 @@ require 'Datavyu_API'
 
 $percent = 0.10
 
-$input_dir  = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/10/full_with_chi_col"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/10/reliability_checks"
-$original_out = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/10/orig_10_percent"
+$input_dir  = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/11_new/full_with_chi_col"
+$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/11_new/reliability_checks"
+$original_out = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/11_new/orig_10_percent"
 
 
 def recode(in_dir, file)

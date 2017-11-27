@@ -15,8 +15,8 @@ require 'Datavyu_API'
 # $input_dir = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/07/orig_rel_10"
 # $output_dir = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/07/csv_out"
 
-$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/14/reliability_checks"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/14/csv_out"
+$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/12/reliability_checks"
+$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/12/csv_out"
 
 # $input_dir = "~/code/work/seedlings/collect/06_opf"
 # $output_dir = "~/code/work/seedlings/collect/06_video_csvs"
