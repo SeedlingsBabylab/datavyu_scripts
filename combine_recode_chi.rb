@@ -1,9 +1,9 @@
 require 'Datavyu_API'
 
 
-$orig_input = "~/code/work/seedlings/datavyu_scripts/data/chichecks_orig_10"
-$recode_input = "~/code/work/seedlings/datavyu_scripts/data/chichecks_recode_10"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chichecks_combined"
+$orig_input = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/11/orig_10_percent"
+$recode_input = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/11/reliability_checks"
+$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/11/converge_out"
 
 
 
@@ -120,6 +120,5 @@ begin
   end
   puts(groups)
   combine(orig_in, reco_in, groups)
-
 
 end
