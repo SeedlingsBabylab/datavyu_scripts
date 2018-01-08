@@ -1,10 +1,15 @@
 require 'Datavyu_API'
 
-$origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/original"
-$recode_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/chichecked"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/output"
+# $origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/original"
+# $recode_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/chichecked"
+# $output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/output"
 
-$csv_out_path = File.expand_path("~/code/work/seedlings/datavyu_scripts/data/chimerge_orig_vs_new.csv")
+$origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/original"
+$recode_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/chichecked_final"
+$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/output"
+
+# $csv_out_path = File.expand_path("~/code/work/seedlings/datavyu_scripts/data/chimerge_orig_vs_new.csv")
+$csv_out_path = File.expand_path("~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/chimerge_orig_vs_new.csv")
 
 def merge(orig_in, reco_in, groups)
     CSV.open($csv_out_path, "wb") do |csv|

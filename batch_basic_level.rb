@@ -15,11 +15,14 @@ require 'Datavyu_API'
 # $input_dir = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/07/orig_rel_10"
 # $output_dir = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/07/csv_out"
 
-$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/13/reliability_checks"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/13/csv_out"
+# $input_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/13/reliability_checks"
+# $output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_checks/13/csv_out"
 
-# $input_dir = "~/code/work/seedlings/collect/06_opf"
-# $output_dir = "~/code/work/seedlings/collect/06_video_csvs"
+# $input_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/final_out_merged"
+# $output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/final_basic_level"
+
+$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/final_out_merged"
+$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/basic_level_output"
 
 
 def basic_level(in_dir, file)
