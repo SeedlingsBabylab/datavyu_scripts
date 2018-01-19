@@ -1,8 +1,8 @@
 require 'Datavyu_API'
 require 'securerandom'
 
-$inputDir = "~/Documents/Projects/Bergelson Lab/annotation/video"
-$outputDir = "~/Documents/Projects/Bergelson Lab/annotation/videoOutput"
+$inputDir = "~/Documents/Projects/Bergelson Lab/annotation/video_with_pho"
+$outputDir = "~/Documents/Projects/Bergelson Lab/annotation/video_with_pho_output"
 
 def randomID
 	randID = SecureRandom.uuid
@@ -34,13 +34,13 @@ begin
 	dataDir = File.expand_path($inputDir)
 	files = Dir.new(dataDir).entries.sort
 	counter = 0
-	errorFile = []
+	errorFile = Array.new
 	for file in files
 		if file.end_with? ('.opf')
 			begin
 				addID(dataDir, file, outDir)
 			rescue
-				errorFile.append(file)
+				errorFile << file
 				print("Error with file: ", file, "\n")
 			end
 		end
