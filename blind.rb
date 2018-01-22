@@ -22,14 +22,11 @@ def blind(in_dir, file)
                 cell.change_code("object_present", "NA")
                 cell.change_code("speaker", "NA")
             end
-
         end
-        
         set_column(col)
         save_db(File.join(File.expand_path($output_dir), "#{prefix}_blind.opf"))
     end
 end
-
 
 begin
     in_dir = File.expand_path($input_dir)
@@ -41,4 +38,3 @@ begin
       end
     end
   end
-  
