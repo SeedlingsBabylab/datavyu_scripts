@@ -1,9 +1,12 @@
 require 'Datavyu_API'
 
-$origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/full_with_chi_col"
-$recode_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/consensus"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/output"
+# $origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/full_with_chi_col"
+# $recode_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/consensus"
+# $output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/output"
 
+$origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/full_with_chi_col"
+$recode_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/consensus"
+$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/output"
 
 
 def merge(orig_in, reco_in, groups)

@@ -4,9 +4,14 @@ require 'Datavyu_API'
 # $recode_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/chichecked"
 # $output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/output"
 
-$origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/original"
-$recode_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/chichecked_final"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/output"
+# $origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/original"
+# $recode_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/chichecked_final"
+# $output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/output"
+
+$origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/missing_16/original"
+$recode_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/missing_16/chichecked_final"
+$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/missing_16/output"
+
 
 # $csv_out_path = File.expand_path("~/code/work/seedlings/datavyu_scripts/data/chimerge_orig_vs_new.csv")
 $csv_out_path = File.expand_path("~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/chimerge_orig_vs_new.csv")

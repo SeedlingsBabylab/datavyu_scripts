@@ -1,7 +1,7 @@
 require 'Datavyu_API'
 
 
-$merge_table = "~/code/work/seedlings/datavyu_scripts/data/chimerge/chimerge_orig_vs_new.csv"
+$merge_table = "~/code/work/seedlings/datavyu_scripts/data/chimerge/chimerge_orig_vs_new_VIDEO.csv"
 $original_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/original"
 $merge_output = "~/code/work/seedlings/datavyu_scripts/data/chimerge/final_out_merged"
 
@@ -11,17 +11,11 @@ end
 
 def old_new_match(old, merg)
     if merg[0].start_with?("%pho")
-        if old.onset.to_s == merg[4] && old.offset.to_s == merg[5] && old.object.start_with?("%pho")
-            return true
-        else
-            return false
-        end
+        return (old.onset.to_s == merg[4] && 
+        old.offset.to_s == merg[5] && 
+        old.object.start_with?("%pho")) ?  true :  false
     end
-    if old.ordinal.to_s == merg[6]
-        return true
-    else
-        return false
-    end
+    return old.ordinal.to_s == merg[6] ?  true :  false
 end
 
 def add_cell(col, object, utt_type, present, speaker, onset, offset)
@@ -60,37 +54,78 @@ def merge(table, files)
                 orig_column = get_column(col)
             end
 
-            new_column = create_new_column("labeled_object_new", "object", "utterance_type", "object_present", "speaker")
+            new_column = create_new_column("labeled_object", "object", "utterance_type", "object_present", "speaker")
 
             # port all the codes that already exist in the original, 
             # matching with their corresponding cell in the merge table
+            matched_blank = false
             for orig_cell in orig_column.cells
                 found = false
+                matched_blank = false
                 for code in entries
-                    # n_code = code[2].strip()
-                    if !code[2]
-                        break
-                    end
                     orig_code = code[1].split("_")
-                    merg_code = code[2].split("_")
-                    if old_new_match(orig_cell, merg_code)
-                        found = true
-                        add_cell(new_column, merg_code[0], merg_code[1], 
-                                merg_code[2], merg_code[3], merg_code[4].to_i, 
-                                merg_code[5].to_i)
+                    if !code[2] || code[2].strip() == ""
+                        matched_blank = old_new_match(orig_cell, orig_code)
+                        # puts "matched_blank in loop: #{matched_blank}"
+                        if matched_blank
+                            # if file == "16_13_coderTE_final.opf"
+                            #     puts matched_blank
+                            #     puts orig_cell.print_all()
+                            # end
+                            # puts "matched with blank cell"
+                            # puts "************************"
+                            # puts orig_cell.print_all()
+                            # puts "----"
+                            # puts orig_code
+                            # puts "************************\n"
+                        end
+                        # next
+                    end
+
+                    if matched_blank
+                        break 
+                    end
+
+                    # puts "mb: #{matched_blank}\toc: #{code[1]}\tnc: #{code[2]}"
+                    if (code[2] != nil) && (code[2].strip() != "")
+                        merg_code = code[2].split("_")
+                        if old_new_match(orig_cell, merg_code) && (!matched_blank)
+                            if file == "22_15_coderVL_final.opf"
+                                puts matched_blank
+                                puts puts merg_code.join(" ")
+                            end
+                            found = true
+                            add_cell(new_column, merg_code[0], merg_code[1], 
+                                    merg_code[2], merg_code[3], merg_code[4].to_i, 
+                                    merg_code[5].to_i)
+                        end
                     end
                 end
 
-                if !found
+                # puts(matched_blank)
+
+                # if matched_blank
+                #     puts(orig_cell.print_all())
+                #     next
+                # end
+
+
+                if (!found) && (!matched_blank)
+                    # if file == "16_13_coderTE_final.opf"
+                    #     puts "\n"
+                    #     puts matched_blank
+                    #     puts orig_cell.print_all()
+                    # end
                     add_cell(new_column, orig_cell.object, orig_cell.utterance_type,
                         orig_cell.object_present, orig_cell.speaker, orig_cell.onset,
                         orig_cell.offset)
                 end  
+
             end
 
             # merge all the pho's
             for code in entries
-                if code[2]
+                if code[2] and !(code[2].strip() == "")
                     if code[2].start_with?("%pho")
                         merg_code = code[2].split("_")
                         found = false
@@ -100,7 +135,12 @@ def merge(table, files)
                                 change_cell(cell, merg_code)
                             end
                         end
-                        if !found # new pho that needs to be added
+                        if !found && (!matched_blank) # new pho that needs to be added
+                            # if file == "16_13_coderTE_final.opf"
+                            #     puts "\n"
+                            #     puts matched_blank
+                            #     puts merg_code.join(" ")
+                            # end
                             add_cell(new_column, merg_code[0], merg_code[1], 
                                     merg_code[2], merg_code[3], merg_code[4].to_i, 
                                     merg_code[5].to_i)

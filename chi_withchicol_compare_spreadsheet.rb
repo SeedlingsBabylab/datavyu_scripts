@@ -1,10 +1,21 @@
 require 'Datavyu_API'
 
-$origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/full_with_chi_col"
-$merged_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/merged_full_with_chi_col"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/output"
+# $origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/full_with_chi_col"
+# $merged_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/merged_full_with_chi_col"
+# $output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/output"
 
-$csv_out_path = File.expand_path("~/code/work/seedlings/datavyu_scripts/data/chimerge_orig_vs_new.csv")
+# $origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/full_with_chi_col"
+# $merged_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/merged_full_with_chi_col"
+# $output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/output"
+
+$origin_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/missing_16/full_with_chi_col_16"
+$merged_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/missing_16/full_with_chi_col_merged_16"
+$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/missing_16/output_16"
+
+
+
+$csv_out_path = File.expand_path("~/code/work/seedlings/datavyu_scripts/data/chimerge/missing_16/chimerge_orig_vs_new.csv")
+# $csv_out_path = File.expand_path("~/code/work/seedlings/datavyu_scripts/data/chimerge/problems/chimerge_orig_vs_new.csv")
 
 def merge(orig_in, reco_in, groups)
     CSV.open($csv_out_path, "wb") do |csv|
