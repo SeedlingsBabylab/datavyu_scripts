@@ -1,9 +1,13 @@
 require 'Datavyu_API'
 
 
-$merge_table = "~/code/work/seedlings/datavyu_scripts/data/chimerge/chimerge_orig_vs_new_VIDEO.csv"
-$original_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/original"
-$merge_output = "~/code/work/seedlings/datavyu_scripts/data/chimerge/final_out_merged"
+# $merge_table = "~/code/work/seedlings/datavyu_scripts/data/chimerge/chimerge_orig_vs_new_VIDEO.csv"
+# $original_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/original"
+# $merge_output = "~/code/work/seedlings/datavyu_scripts/data/chimerge/final_out_merged"
+
+$merge_table = "~/code/work/seedlings/datavyu_scripts/data/chimerge/missing_16/chimerge_orig_vs_new_MONTH_16.csv"
+$original_in = "~/code/work/seedlings/datavyu_scripts/data/chimerge/missing_16/original_16"
+$merge_output = "~/code/work/seedlings/datavyu_scripts/data/chimerge/missing_16/final_out_merged_16"
 
 def filter_table(table, file)
     return table.select{|row| row[0] == file}

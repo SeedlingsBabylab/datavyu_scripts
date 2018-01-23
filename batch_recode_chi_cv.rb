@@ -3,9 +3,9 @@ require 'Datavyu_API'
 
 $percent = 0.10
 
-$input_dir  = "~/code/work/bergelsonlab/pho_checks/opf_chi_cv2/input_orig"
-$output_dir = "~/code/work/bergelsonlab/pho_checks/opf_chi_cv2/recode_out"
-$original_out = "~/code/work/bergelsonlab/pho_checks/opf_chi_cv2/orig_out"
+$input_dir  = "~/code/work/bergelsonlab/pho_checks/opf_chi_cv3/input_orig"
+$output_dir = "~/code/work/bergelsonlab/pho_checks/opf_chi_cv3/recode_out"
+$original_out = "~/code/work/bergelsonlab/pho_checks/opf_chi_cv3/orig_out"
 
 
 def recode(in_dir, file)

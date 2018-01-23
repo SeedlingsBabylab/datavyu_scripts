@@ -1,8 +1,8 @@
 require 'Datavyu_API'
 
 
-$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_cv_checks/orig_out"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_cv_checks/orig_out_with_preceding15"
+$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_cv_checks/round2/orig_out"
+$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chi_cv_checks/round2/orig_out_with_preceding15"
 
 
 def add_15_region(in_dir, file)
