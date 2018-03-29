@@ -69,29 +69,29 @@ begin
 			end
 
 			# Speaker code has to be all uppercase
-			if !is_uppercase(cell.speaker.to_s) && !cell.object.to_s.start_with?("%com:")
+			if !is_uppercase(cell.speaker.to_s) && !cell.object.to_s.start_with?("%com:") && !cell.object.to_s.start_with?("%pho:")
 				puts "check codes: speaker code must be uppercase: [Column]: " + column + " [Cell]# : "+\
 				cell.ordinal.to_s
 			end
 
 			# object_present needs to be single character and lowercase
-			if (cell.object_present.to_s.length != 1) && !cell.object.to_s.start_with?("%com:")
+			if (cell.object_present.to_s.length != 1) && !cell.object.to_s.start_with?("%com:") && !cell.object.to_s.start_with?("%pho:")
 				puts "check codes: object_present needs to be a single character: [Column]: " + column + " [Cell]# : "+\
 				cell.ordinal.to_s
 			end
 
-			if is_uppercase(cell.object_present.to_s) && !cell.object.to_s.start_with?("%com:")
+			if is_uppercase(cell.object_present.to_s) && !cell.object.to_s.start_with?("%com:") && !cell.object.to_s.start_with?("%pho:")
 				puts "check codes: object_present needs to be lower case: [Column]: " + column + " [Cell]# : "+\
 				cell.ordinal.to_s
 			end
 
 			# utterance_type needs to be single character and lowercase
-			if (cell.utterance_type.to_s.length != 1) && !cell.object.to_s.start_with?("%com:")
+			if (cell.utterance_type.to_s.length != 1) && !cell.object.to_s.start_with?("%com:") && !cell.object.to_s.start_with?("%pho:")
 				puts "check codes: utterance_type needs to be a single character: [Column]: " + column + " [Cell]# : "+\
 				cell.ordinal.to_s
 			end
 
-			if is_uppercase(cell.utterance_type.to_s) && !cell.object.to_s.start_with?("%com:")
+			if is_uppercase(cell.utterance_type.to_s) && !cell.object.to_s.start_with?("%com:") && !cell.object.to_s.start_with?("%pho:")
 				puts "check codes: utterance_type needs to be lower case: [Column]: " + column + " [Cell]# : "+\
 				cell.ordinal.to_s
 			end
@@ -120,7 +120,7 @@ begin
 				end
 
 				# codes cannot contain space, unless it's inside comment
-				if !code.start_with?("%com:") and code.match(/\s/)
+				if !code.start_with?("%com:") && !cell.object.to_s.start_with?("%pho:") && code.match(/\s/)
 					puts "check_codes: code cannot contain space: [Column]: " + column+\
 						"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 				end
@@ -178,7 +178,7 @@ begin
 				puts "intervals ERROR: onset is greater than offset: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
 
 			end
-			if !cell.object.to_s.start_with?("%com") && (cell.onset == cell.offset)
+			if !cell.object.to_s.start_with?("%com") && !cell.object.to_s.start_with?("%pho:") && (cell.onset == cell.offset)
 				puts "intervals ERROR: onset and offset are equal in non-comment cell: [Column] " + column + " [Cell#]: " + cell.ordinal.to_s
 			end
 		end
@@ -259,44 +259,44 @@ begin
             end
 				end
 
-				used_to_be_nopi = false
-				if already_in_nopi && (!audio_regions.empty? || !video_regions.empty?)
-					used_to_be_nopi = true
-					# no_pi.delete($pj.getProjectName())
-					# no_pi.delete($pj.getProjectName()+"\n")
+				# used_to_be_nopi = false
+				# if already_in_nopi && (!audio_regions.empty? || !video_regions.empty?)
+				# 	used_to_be_nopi = true
+				# 	# no_pi.delete($pj.getProjectName())
+				# 	# no_pi.delete($pj.getProjectName()+"\n")
 
-					File.open(no_persinfo_file_path, 'w') do |f|
-						f.truncate(0)
-						# f.puts(no_pi)
-					end
-					puts $pj.getProjectName() + " used to have no personal info. It has been removed from the no_personal_info list\n\n"
-				end
+				# 	File.open(no_persinfo_file_path, 'w') do |f|
+				# 		f.truncate(0)
+				# 		# f.puts(no_pi)
+				# 	end
+				# 	puts $pj.getProjectName() + " used to have no personal info. It has been removed from the no_personal_info list\n\n"
+				# end
 
 				# if there are no personal info regions, add the name of the file
 				# to the no_personal_info.txt manifest in /seedlings/Scripts_and_Apps/
-				if (audio_regions.empty? && video_regions.empty? && !already_in_nopi)
-					open(no_persinfo_file_path, "a") do |f|
-						f.puts $pj.getProjectName()
-					end
-					puts "There were no personal info regions"
-					exit
-				end
-				if already_in_nopi && !used_to_be_nopi
-					exit
-				end
-				output_file = File.open(output_path, "w")
+				# if (audio_regions.empty? && video_regions.empty? && !already_in_nopi)
+				# 	open(no_persinfo_file_path, "a") do |f|
+				# 		f.puts $pj.getProjectName()
+				# 	end
+				# 	puts "There were no personal info regions"
+				# 	exit
+				# end
+				# if already_in_nopi && !used_to_be_nopi
+				# 	exit
+				# end
+				# output_file = File.open(output_path, "w")
 
-        for region in audio_regions
-                output_file.puts("audio,#{region[0]},#{region[1]}")
-        end
+        # for region in audio_regions
+        #         output_file.puts("audio,#{region[0]},#{region[1]}")
+        # end
 
-        for region in video_regions
-            output_file.puts("video,#{region[0]},#{region[1]}")
-        end
+        # for region in video_regions
+        #     output_file.puts("video,#{region[0]},#{region[1]}")
+        # end
 
-        output_file.close()
+        # output_file.close()
 
-        puts "personal info timestamps written to: " + output_path + "\n\n"
+        # puts "personal info timestamps written to: " + output_path + "\n\n"
 	end
 
 
