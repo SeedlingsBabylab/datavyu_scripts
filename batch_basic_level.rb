@@ -41,7 +41,8 @@ def basic_level(in_dir, file)
       csv << ["labeled_object.ordinal","labeled_object.onset",
               "labeled_object.offset","labeled_object.object",
               "labeled_object.utterance_type","labeled_object.object_present",
-              "labeled_object.speaker","labeled_object.basic_level"]
+              "labeled_object.speaker","labeled_object.id",
+              "labeled_object.basic_level"]
       for cell in col.cells
         # puts cell.ordinal.to_s
         # puts cell.object.to_s

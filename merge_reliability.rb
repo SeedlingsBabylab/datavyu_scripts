@@ -50,6 +50,7 @@ def merge(orig_in, reco_in, groups)
         orig_cell.change_code("utterance_type", cell.utterance_type)
         orig_cell.change_code("object_present", cell.object_present)
         orig_cell.change_code("speaker", cell.speaker)
+        orig_cell.change_code("id", cell.id)
         orig_cell.change_code("onset", cell.onset)
         orig_cell.change_code("offset", cell.offset)
     end
