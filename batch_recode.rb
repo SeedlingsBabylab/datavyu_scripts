@@ -38,12 +38,14 @@ def recode(in_dir, file)
 
     # output the blank recode opf's
     new_column = create_new_column("recode", "object", "utterance_type","object_present","speaker", "original_ordinal")
+    # new_column = create_new_column("recode", "object", "utterance_type","object_present","speaker", "id", "original_ordinal")
     for cell in recode_slice
       newcell = new_column.make_new_cell()
 			newcell.change_code("object", cell.object)
 			newcell.change_code("utterance_type", "")
 			newcell.change_code("object_present", "")
 			newcell.change_code("speaker", cell.speaker)
+      # newcell.change_code("id", cell.id)
 			newcell.change_code("onset", cell.onset)
 			newcell.change_code("offset", cell.offset)
 			newcell.change_code("ordinal", cell.ordinal)
@@ -59,12 +61,14 @@ def recode(in_dir, file)
 
     # output the original annotations to a separate opf
     new_column = create_new_column("recode", "object", "utterance_type","object_present","speaker", "original_ordinal")
+    # new_column = create_new_column("recode", "object", "utterance_type","object_present","speaker", "id", "original_ordinal")
     for cell in recode_slice
       newcell = new_column.make_new_cell()
 			newcell.change_code("object", cell.object)
 			newcell.change_code("utterance_type", cell.utterance_type)
 			newcell.change_code("object_present", cell.object_present)
 			newcell.change_code("speaker", cell.speaker)
+      # newcell.change_code("id", cell.id)
 			newcell.change_code("onset", cell.onset)
 			newcell.change_code("offset", cell.offset)
 			newcell.change_code("ordinal", cell.ordinal)

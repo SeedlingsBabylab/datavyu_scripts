@@ -4,10 +4,13 @@ include Config
 
 begin
   # puts $pj.getDatabaseFileName()
+	# puts Dir.pwd
   # puts $pj.getProjectName()
 
 	$valid_utt_type = Array["q", "d", "i", "u", "r", "s", "n", "NA"]
 	$valid_obj_pres = Array["y", "n", "u", "NA"]
+	# $valid_id_newline = File.readlines('usedID.txt')
+	# $valid_id = valid_id_newline.map{ |x| x.strip} # may have to add empty string
 
 	def checkCodes(cell)
 		if not $valid_utt_type.include?(cell.utterance_type.to_s)
@@ -16,6 +19,9 @@ begin
 		if not $valid_obj_pres.include?(cell.object_present.to_s)
 			puts "Cell# "+cell.ordinal.to_s+":  \""+cell.object_present.to_s+"\" is not a valid object_present code\n"
 		end
+		# if not $valid_id.include?(cell.id.to_s)
+		# 	puts "Cell# "+cell.ordinal.to_s+":  \""+cell.id.to_s+"\" is not a valid id code (this id is not in the list of used IDs)\n"
+		# end
 	end
 
 
