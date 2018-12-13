@@ -2,9 +2,9 @@ require 'Datavyu_API'
 
 $percent = 0.10
 
-$input_dir  = "~/code/work/seedlings/reliability_data/batch_recode_in"
-$output_dir = "~/code/work/seedlings/reliability_data/batch_recode_out"
-$original_out = "~/code/work/seedlings/reliability_data/batch_recode_orig_out"
+$input_dir  = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/full_files/"
+$output_dir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/reliability_checks/"
+$original_out = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/orig_10_percent/"
 
 
 

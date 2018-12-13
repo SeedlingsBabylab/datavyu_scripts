@@ -4,8 +4,8 @@ require 'Datavyu_API'
 # $input_dir = "~/code/work/seedlings/reliability_data/by_month/07/recode_and_orig_opfs_partial"
 # $output_dir = "~/code/work/seedlings/reliability_data/by_month/07/converge_out"
 
-$input_dir = "~/code/work/seedlings/reliability_data/by_month/07/recode_and_orig_opfs_partial"
-$output_dir = "~/code/work/seedlings/reliability_data/by_month/07/converge_out"
+$input_dir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/recode_and_orig_opfs/"
+$output_dir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/converge_out/"
 
 
 

@@ -21,8 +21,8 @@ require 'Datavyu_API'
 # $input_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/final_out_merged"
 # $output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/final_basic_level"
 
-$input_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/final_out_merged"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/chimerge/basic_level_output"
+$input_dir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/recode_and_orig_opfs/"
+$output_dir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/basic_level1_output/"
 
 
 def basic_level(in_dir, file)
@@ -49,7 +49,7 @@ def basic_level(in_dir, file)
         # puts "\n\n"
         if !cell.object.to_s.start_with?("%pho")
           csv << [cell.ordinal.to_s, cell.onset.to_s, cell.offset.to_s, cell.object.to_s,
-                  cell.utterance_type.to_s, cell.object_present.to_s, cell.speaker.to_s, ""]
+                  cell.utterance_type.to_s, cell.object_present.to_s, cell.speaker.to_s, cell.id.to_s, ""]
         end
       end
     end

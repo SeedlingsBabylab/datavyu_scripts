@@ -1,8 +1,8 @@
 require 'Datavyu_API'
 
-$origin_in = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/08/merge_back/full_files"
-$recode_in = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/08/merge_back/converge_out"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/08/merge_back/final_out"
+$origin_in = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/full_files"
+$recode_in = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/converge_out"
+$output_dir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/final_out"
 
 
 
@@ -56,7 +56,7 @@ def merge(orig_in, reco_in, groups)
     end
 
     set_column(orig_column)
-
+    puts "saving"
     save_db(File.join(File.expand_path($output_dir), File.basename(files["orig"])))
   }
 end
