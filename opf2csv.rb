@@ -3,7 +3,7 @@ require 'Datavyu_API'
 # $inputDir = "~/Documents/Projects/Bergelson Lab/annotation/video_with_pho"
 # $outputDir = "~/Documents/Projects/Bergelson Lab/annotation/video_with_pho_output"
 
-$inputDir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/full_files/"
+$inputDir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/output/"
 $outputDir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/output_csv/"
 
 
@@ -12,7 +12,7 @@ def opf2csv(dir, file, outDir)
     p get_column_list[0]
     columnName = get_column_list[0]
     theColumn = get_column(columnName)
-    csv_out = File.new(File.join(outDir, file.gsub('.opf', '.csv')), "wb")
+    csv_out = File.new(File.join(outDir, file.gsub('.opf', '_processed.csv')), "wb")
     csv_out.write(['labeled_object.ordinal', 'onset', 'offset', theColumn.cells[0].arglist].join(',labeled_object.')+",basic_level")
     for cell in theColumn.cells
       csv_out.write("\n#{[printCellCodes(cell)].join(',')},")
