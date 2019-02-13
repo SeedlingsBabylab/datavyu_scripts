@@ -9,8 +9,8 @@ begin
 
 	$valid_utt_type = Array["q", "d", "i", "u", "r", "s", "n", "NA"]
 	$valid_obj_pres = Array["y", "n", "u", "NA"]
-	$valid_id_newline = File.readlines('usedID.txt') #TODO put the right path
-	$valid_id = valid_id_newline.map{ |x| x.strip} # may have to add empty string
+	$valid_id_newline = File.readlines('/Volumes/pn-opus/Seedlings/usedID.txt') #TODO put the right path
+	$valid_id = $valid_id_newline.map{ |x| x.strip} # may have to add empty string
 
 	def checkCodes(cell)
 		if not $valid_utt_type.include?(cell.utterance_type.to_s)
