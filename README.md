@@ -7,6 +7,9 @@ This repository contains a collection of ruby scripts that check to see if Datav
 2. [Structure](#structure)
     * [run_all_postannotation.rb](#runall)
     * [check_codes.rb](#checkcodes)
+    * [check_comments.rb](#checkcomments)
+    * [check_intervals.rb](#checkintervals)
+    * [personalinfo.rb](#personalinfo)
 
 
 <a name='running'></a>
@@ -71,3 +74,12 @@ You can run them by double clicking their names in the bottom left corner in Dat
        * object_present is single letter and lowercase
        * utterance_type is single letter and lowercase
        * none of the codes are empty
+<a name='checkcomments'></a>
+  3. check_comments.rb  
+  A column name needs to be specified, and this script will perform checks on the given column only. The checks includes:
+       * Every other field of a comment cell should be empty
+       * The onset and offset time of a comment cell should be equal
+<a name='checkintervals'></a>
+  4. check_intervals.rb
+<a name='personalinfo'></a>
+  5. personalinfo.rb
