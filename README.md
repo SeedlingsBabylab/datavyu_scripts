@@ -81,5 +81,10 @@ You can run them by double clicking their names in the bottom left corner in Dat
        * The onset and offset time of a comment cell should be equal
 <a name='checkintervals'></a>
   4. check_intervals.rb
+  This script will perform checks on all columns. The checks includes:
+       * Every non-comment cell's onset is not equal to the offset. (In fact, onset should be strictly smaller than offset)
 <a name='personalinfo'></a>
   5. personalinfo.rb
+  This script will perform checks on all columns. The checks includes:
+       * Personal info cell must contain either video or audio info
+  
