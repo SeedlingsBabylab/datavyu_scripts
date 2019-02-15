@@ -10,6 +10,7 @@ This repository contains a collection of ruby scripts that check to see if Datav
     * [check_comments.rb](#checkcomments)
     * [check_intervals.rb](#checkintervals)
     * [personalinfo.rb](#personalinfo)
+    * [addID-Video.rb](#addidvideo)
 
 
 <a name='running'></a>
@@ -80,11 +81,14 @@ You can run them by double clicking their names in the bottom left corner in Dat
        * Every other field of a comment cell should be empty
        * The onset and offset time of a comment cell should be equal
 <a name='checkintervals'></a>
-  4. check_intervals.rb
+  4. check_intervals.rb  
   This script will perform checks on all columns. The checks includes:
        * Every non-comment cell's onset is not equal to the offset. (In fact, onset should be strictly smaller than offset)
 <a name='personalinfo'></a>
-  5. personalinfo.rb
+  5. personalinfo.rb  
   This script will perform checks on all columns. The checks includes:
        * Personal info cell must contain either video or audio info
+<a name='personalinfo'></a>
+  6. addID-Video.rb  
+  This script will add a new attribute **id** to each cell in the first column of every **opf** in a specified folder. The new **opf** files with the additional **id** field will be written to another specified output folder.
   
