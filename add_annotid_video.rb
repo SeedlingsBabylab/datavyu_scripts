@@ -10,10 +10,17 @@ A lot of this is not necessary but I copied another script and have to clean thi
 # $inputDir = "~/Documents/Projects/Bergelson Lab/annotation/video_with_pho"
 # $outputDir = "~/Documents/Projects/Bergelson Lab/annotation/video_with_pho_output"
 
-$inputDir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/opf_sc/"
-$outputDir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/output/"
+# $inputDir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/opf_sc/"
+# $outputDir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/output/"
 $usedIDFile = "/Volumes/pn-opus/Seedlings/usedID.txt"
 # $usedIDFile = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/usedID.txt"
+
+case RbConfig::CONFIG['host_os']
+	when /mswin|windows/i
+		$usedIDFile = 'Z:\Seedlings\usedID.txt'
+	else
+		$usedIDFile = "/Volumes/pn-opus/Seedlings/usedID.txt"
+end
 
 def randomID
 	randID = SecureRandom.uuid
@@ -54,19 +61,19 @@ def addID(dir, outDir)
 end
 
 begin
-	outDir = File.expand_path($outputDir)
-	dataDir = File.expand_path($inputDir)
+	# outDir = File.expand_path($outputDir)
+	# dataDir = File.expand_path($inputDir)
 	# retrieve used IDs
 	$usedID = Set.new
 	fID = open $usedIDFile
 	fID.each do |line|
 		$usedID << line
 	end
-	files = Dir.new(dataDir).entries.sort
+	# files = Dir.new(dataDir).entries.sort
 	counter = 0
 	errorFile = Array.new
 
-	addID(dataDir, outDir)
+	addID('','')
 
 	# File.open(File.join(outDir, 'usedID.txt'), 'w') {
 	File.open($usedIDFile, 'w') {

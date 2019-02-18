@@ -1,44 +1,56 @@
 require 'Datavyu_API.rb'
 require 'rbconfig'
-include Config
+# include Config
+
+
+# puts $pj.getDatabaseFileName()
+# puts Dir.pwd
+# puts $pj.getProjectName()
+case RbConfig::CONFIG['host_os']
+	when /mswin|windows/i
+		$valid_id_newline = File.readlines('Z:\Seedlings\usedID.txt')
+	else
+		$valid_id_newline = File.readlines("/Volumes/pn-opus/Seedlings/usedID.txt")
+end
+$valid_id = $valid_id_newline.map{ |x| x.strip} # may have to add empty string
+
+
+def checkCodes(cell)
+	if not $valid_utt_type.include?(cell.utterance_type.to_s)
+		puts "Cell# "+cell.ordinal.to_s+":  \""+cell.utterance_type.to_s+"\" is not a valid utterance_type code\n"
+	end
+	if not $valid_obj_pres.include?(cell.object_present.to_s)
+		puts "Cell# "+cell.ordinal.to_s+":  \""+cell.object_present.to_s+"\" is not a valid object_present code\n"
+	end
+	if not $valid_id.include?(cell.id.to_s)
+		puts "Cell# "+cell.ordinal.to_s+":  \""+cell.id.to_s+"\" is not a valid id code (this id is not in the list of used IDs)\n"
+	end
+end
+
+
+def is_uppercase(some_string)
+	return some_string == some_string.upcase
+end
+
+
+def check_mwu(cell)
+	if cell.object_present.to_s != "NA"
+		puts "Cell# " + cell.ordinal.to_s + ":  object_present must be NA in \"%com: mwu\" cell"
+	end
+	if cell.speaker.to_s != "NA"
+		puts "Cell# " + cell.ordinal.to_s + ":  speaker must be NA in \"%com: mwu\" cell"
+	end
+end
+
+$valid_utt_type = Array["q", "d", "i", "u", "r", "s", "n", "NA"]
+$valid_obj_pres = Array["y", "n", "u", "NA"]
+
+
+
+# $valid_id_newline = File.readlines('/Volumes/pn-opus/Seedlings/usedID.txt') #TODO put the right path
+
 
 begin
-  # puts $pj.getDatabaseFileName()
-	# puts Dir.pwd
-  # puts $pj.getProjectName()
-
-	$valid_utt_type = Array["q", "d", "i", "u", "r", "s", "n", "NA"]
-	$valid_obj_pres = Array["y", "n", "u", "NA"]
-	$valid_id_newline = File.readlines('/Volumes/pn-opus/Seedlings/usedID.txt') #TODO put the right path
-	$valid_id = $valid_id_newline.map{ |x| x.strip} # may have to add empty string
-
-	def checkCodes(cell)
-		if not $valid_utt_type.include?(cell.utterance_type.to_s)
-			puts "Cell# "+cell.ordinal.to_s+":  \""+cell.utterance_type.to_s+"\" is not a valid utterance_type code\n"
-		end
-		if not $valid_obj_pres.include?(cell.object_present.to_s)
-			puts "Cell# "+cell.ordinal.to_s+":  \""+cell.object_present.to_s+"\" is not a valid object_present code\n"
-		end
-		if not $valid_id.include?(cell.id.to_s)
-			puts "Cell# "+cell.ordinal.to_s+":  \""+cell.id.to_s+"\" is not a valid id code (this id is not in the list of used IDs)\n"
-		end
-	end
-
-
-	def is_uppercase(some_string)
-		return some_string == some_string.upcase
-	end
-
-
-	def check_mwu(cell)
-		if cell.object_present.to_s != "NA"
-			puts "Cell# " + cell.ordinal.to_s + ":  object_present must be NA in \"%com: mwu\" cell"
-		end
-		if cell.speaker.to_s != "NA"
-			puts "Cell# " + cell.ordinal.to_s + ":  speaker must be NA in \"%com: mwu\" cell"
-		end
-	end
-
 	columns = getColumnList()
 
 	# Check Codes
@@ -215,17 +227,17 @@ begin
 	#  will be generated. This is the first line after this comment
 
 
-	output_path = $pj.getProjectDirectory() + File::SEPARATOR + $pj.getProjectName() + "_personal_info.csv"
-	output_path.gsub!('\\', '/')
-
-	split_path = output_path.split(File::SEPARATOR)
-
-	case CONFIG['host_os']
-	when /mswin|windows/i
-		no_persinfo_file_path = File.join(split_path[0], "Seedlings/Scripts_and_Apps/no_personal_info.txt")
-	else
-		no_persinfo_file_path = "/Volumes/pn-opus/Seedlings/Scripts_and_Apps/no_personal_info.txt"
-	end
+	# output_path = $pj.getProjectDirectory() + File::SEPARATOR + $pj.getProjectName() + "_personal_info.csv"
+	# output_path.gsub!('\\', '/')
+	#
+	# split_path = output_path.split(File::SEPARATOR)
+	#
+	# case CONFIG['host_os']
+	# when /mswin|windows/i
+	# 	no_persinfo_file_path = File.join(split_path[0], "Seedlings/Scripts_and_Apps/no_personal_info.txt")
+	# else
+	# 	no_persinfo_file_path = "/Volumes/pn-opus/Seedlings/Scripts_and_Apps/no_personal_info.txt"
+	# end
 	#puts output_path
 	#output = File.expand_path(output_path)
 
