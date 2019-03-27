@@ -65,30 +65,31 @@ You can run them by double clicking their names in the bottom left corner in Dat
     * check_comments.rb
     * check_internvals.rb
     * personalinfo.rb
-    
+
     and therefore performs all of the tasks done in each of the individual script for each column in the **opf** file
 <a name='checkcodes'></a>
-  2. check_codes.rb  
-  A column name needs to be specified, and this script will perform checks on the given column only. The checks includes:  
-       * Speaker length is 3
-       * Speaker codes are all uppercase
-       * object_present is single letter and lowercase
-       * utterance_type is single letter and lowercase
-       * none of the codes are empty
+2. check_codes.rb  
+A column name needs to be specified, and this script will perform checks on the given column only. The checks includes:  
+     * Speaker length is 3
+     * Speaker codes are all uppercase
+     * object_present is single letter and lowercase
+     * utterance_type is single letter and lowercase
+     * none of the codes are empty
 <a name='checkcomments'></a>
-  3. check_comments.rb  
-  A column name needs to be specified, and this script will perform checks on the given column only. The checks includes:
-       * Every other field of a comment cell should be empty
-       * The onset and offset time of a comment cell should be equal
+3. check_comments.rb  
+A column name needs to be specified, and this script will perform checks on the given column only. The checks includes:
+     * Every other field of a comment cell should be empty
+     * The onset and offset time of a comment cell should be equal
 <a name='checkintervals'></a>
-  4. check_intervals.rb  
-  This script will perform checks on all columns. The checks includes:
-       * Every non-comment cell's onset is not equal to the offset. (In fact, onset should be strictly smaller than offset)
+4. check_intervals.rb  
+This script will perform checks on all columns. The checks includes:
+     * Every non-comment cell's onset is not equal to the offset. (In fact, onset should be strictly smaller than offset)
 <a name='personalinfo'></a>
-  5. personalinfo.rb  
-  This script will perform checks on all columns. The checks includes:
-       * Personal info cell must contain either video or audio info
+5. personalinfo.rb  
+This script will perform checks on all columns. The checks includes:
+     * Personal info cell must contain either video or audio info
 <a name='personalinfo'></a>
-  6. addID-Video.rb  
-  This script will add a new attribute **id** to each cell in the first column of every **opf** in a specified folder. The new **opf** files with the additional **id** field will be written to another specified output folder.
-  
+6. addID-Video.rb  
+This script will add a new attribute **id** to each cell in the first column of every **opf** in a specified folder. The new **opf** files with the additional **id** field will be written to another specified output folder.
+7. off.rb
+This script will reconstruct **opf** file from **csv** file. Paths to output folder and **csv** file need to be specified in the script. 
