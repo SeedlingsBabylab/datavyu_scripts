@@ -1,8 +1,8 @@
 require 'Datavyu_API'
 
-$origin_in = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/full_files"
-$recode_in = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/converge_out"
-$output_dir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/final_out"
+$origin_in = "/Volumes/pn-opus/Seedlings/Working_Files/reliability_12/video/full_files"
+$recode_in = "/Volumes/pn-opus/Seedlings/Working_Files/reliability_12/video/converge_out"
+$output_dir = "/Volumes/pn-opus/Seedlings/Working_Files/reliability_12/video/final_out"
 
 
 
@@ -10,8 +10,9 @@ def merge(orig_in, reco_in, groups)
   groups.each_value { |files|
     prefix = files["orig"][0..4]
     puts("**********#{prefix}*********")
-
+    puts files
     if files["consensus"].nil?
+      puts "no consensus"
       next
     end
 
@@ -72,20 +73,22 @@ begin
   reco_files = Dir.new(reco_in).entries
 
   filenames = orig_files + reco_files
+  # puts orig_files
+  # puts reco_files
 
   groups = Hash.new
   for file in filenames
     if file.end_with? ".opf"
       prefix = file[0..4]
       if groups.has_key?(prefix)
-        if file.include? "consensus_relia.opf"
+        if file.include? "converge_rel.opf"
           groups[prefix]["consensus"] = file
         else
           groups[prefix]["orig"] = file
         end
       else
         groups[prefix] = Hash.new
-        if file.include? "consensus_relia.opf"
+        if file.include? "converge_rel.opf"
           groups[prefix]["consensus"] = file
         else
           groups[prefix]["orig"] = file
@@ -93,7 +96,7 @@ begin
       end
     end
   end
-  # puts(groups)
+  puts(groups)
   merge(orig_in, reco_in, groups)
 
 end
