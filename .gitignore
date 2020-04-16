@@ -9,3 +9,5 @@ opffiles
 *.tags
 data
 *.DO_NOT_USE
+
+*~

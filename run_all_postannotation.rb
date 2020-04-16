@@ -125,6 +125,9 @@ begin
 
 
 			cell.argvals.each_with_index { |code, i|
+				if code == "" && cell.speaker.to_s != "CHI" && cell.arglist[i].to_s == "pho"
+					next
+				end
 				# codes can't be empty
 				if code == ""
 					puts "check_codes (Found empty code): [Column]: " + column+\
