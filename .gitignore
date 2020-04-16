@@ -1,10 +1,11 @@
 *.DS_Store
 *.swp
-.idea
-.ropeproject
+*.idea
+*.ropeproject
 opffiles
 *.txt
 *.opf
 *.csv
-.tags
+*.tags
 data
+*.DO_NOT_USE

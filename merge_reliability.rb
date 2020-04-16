@@ -1,8 +1,8 @@
 require 'Datavyu_API'
 
-$origin_in = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/08/merge_back/full_files"
-$recode_in = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/08/merge_back/converge_out"
-$output_dir = "~/code/work/seedlings/datavyu_scripts/data/reliability_checks/08/merge_back/final_out"
+$origin_in = "/Volumes/pn-opus/Seedlings/Working_Files/reliability_12/video/full_files"
+$recode_in = "/Volumes/pn-opus/Seedlings/Working_Files/reliability_12/video/converge_out"
+$output_dir = "/Volumes/pn-opus/Seedlings/Working_Files/reliability_12/video/final_out"
 
 
 
@@ -10,8 +10,9 @@ def merge(orig_in, reco_in, groups)
   groups.each_value { |files|
     prefix = files["orig"][0..4]
     puts("**********#{prefix}*********")
-
+    puts files
     if files["consensus"].nil?
+      puts "no consensus"
       next
     end
 
@@ -50,12 +51,13 @@ def merge(orig_in, reco_in, groups)
         orig_cell.change_code("utterance_type", cell.utterance_type)
         orig_cell.change_code("object_present", cell.object_present)
         orig_cell.change_code("speaker", cell.speaker)
+        orig_cell.change_code("id", cell.id)
         orig_cell.change_code("onset", cell.onset)
         orig_cell.change_code("offset", cell.offset)
     end
 
     set_column(orig_column)
-
+    puts "saving"
     save_db(File.join(File.expand_path($output_dir), File.basename(files["orig"])))
   }
 end
@@ -71,20 +73,22 @@ begin
   reco_files = Dir.new(reco_in).entries
 
   filenames = orig_files + reco_files
+  # puts orig_files
+  # puts reco_files
 
   groups = Hash.new
   for file in filenames
     if file.end_with? ".opf"
       prefix = file[0..4]
       if groups.has_key?(prefix)
-        if file.include? "consensus_relia.opf"
+        if file.include? "converge_rel.opf"
           groups[prefix]["consensus"] = file
         else
           groups[prefix]["orig"] = file
         end
       else
         groups[prefix] = Hash.new
-        if file.include? "consensus_relia.opf"
+        if file.include? "converge_rel.opf"
           groups[prefix]["consensus"] = file
         else
           groups[prefix]["orig"] = file
@@ -92,7 +96,7 @@ begin
       end
     end
   end
-  # puts(groups)
+  puts(groups)
   merge(orig_in, reco_in, groups)
 
 end

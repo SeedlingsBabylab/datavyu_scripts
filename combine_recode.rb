@@ -4,8 +4,8 @@ require 'Datavyu_API'
 # $input_dir = "~/code/work/seedlings/reliability_data/by_month/07/recode_and_orig_opfs_partial"
 # $output_dir = "~/code/work/seedlings/reliability_data/by_month/07/converge_out"
 
-$input_dir = "~/code/work/seedlings/reliability_data/by_month/07/recode_and_orig_opfs_partial"
-$output_dir = "~/code/work/seedlings/reliability_data/by_month/07/converge_out"
+$input_dir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/recode_and_orig_opfs/"
+$output_dir = "/Volumes/pn-opus/Seedlings/Working_Files/annot_id/video/converge_out/"
 
 
 
@@ -34,8 +34,8 @@ def combine(in_dir, groups)
     $db, $pj = load_db(File.join(in_dir, files["orig"]))
     orig_col = get_column("recode")
 
-    new_orig_col = create_new_column("original", "object", "utterance_type","object_present","speaker", "original_ordinal")
-    new_recode_col = create_new_column("recode", "object", "utterance_type","object_present","speaker", "original_ordinal")
+    new_orig_col = create_new_column("original", "object", "utterance_type", "object_present", "speaker", "id", "original_ordinal")
+    new_recode_col = create_new_column("recode", "object", "utterance_type", "object_present", "speaker", "id", "original_ordinal")
     for cell in orig_col.cells
       found_match = false
 
@@ -55,6 +55,7 @@ def combine(in_dir, groups)
   			newcell.change_code("utterance_type", cell.utterance_type)
   			newcell.change_code("object_present", cell.object_present)
   			newcell.change_code("speaker", cell.speaker)
+        newcell.change_code("id", cell.id)
   			newcell.change_code("onset", cell.onset)
   			newcell.change_code("offset", cell.offset)
   			newcell.change_code("ordinal", cell.ordinal)
@@ -66,6 +67,7 @@ def combine(in_dir, groups)
   			newrecode.change_code("utterance_type", not_matched.utterance_type)
   			newrecode.change_code("object_present", not_matched.object_present)
   			newrecode.change_code("speaker", not_matched.speaker)
+        newrecode.change_code("id", cell.id)
   			newrecode.change_code("onset", not_matched.onset)
   			newrecode.change_code("offset", not_matched.offset)
   			newrecode.change_code("ordinal", not_matched.ordinal)
