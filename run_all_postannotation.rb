@@ -125,6 +125,7 @@ begin
 
 
 			cell.argvals.each_with_index { |code, i|
+				# pho can be empty
 				if code == "" && cell.speaker.to_s != "CHI" && cell.arglist[i].to_s == "pho"
 					next
 				end
@@ -140,8 +141,8 @@ begin
 						"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 				end
 
-				# codes cannot contain space, unless it's inside comment
-				if !code.start_with?("%com:") && !cell.object.to_s.start_with?("%pho:") && code.match(/\s/)
+				# codes cannot contain space, unless it's inside comment, or its a pho code.
+				if cell.argslist[i].to_s != "pho" && cell!code.start_with?("%com:") && !cell.object.to_s.start_with?("%pho:") && code.match(/\s/)
 					puts "check_codes: code cannot contain space: [Column]: " + column+\
 						"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 				end
