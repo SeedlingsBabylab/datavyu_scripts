@@ -142,7 +142,7 @@ begin
 				end
 
 				# codes cannot contain space, unless it's inside comment, or its a pho code.
-				if cell.argslist[i].to_s != "pho" && cell!code.start_with?("%com:") && !cell.object.to_s.start_with?("%pho:") && code.match(/\s/)
+				if cell.arglist[i].to_s != "pho" && !code.start_with?("%com:") && !cell.object.to_s.start_with?("%pho:") && code.match(/\s/)
 					puts "check_codes: code cannot contain space: [Column]: " + column+\
 						"       [Variable]: " + cell.arglist[i].to_s + "    [Cell#]: " + cell.ordinal.to_s
 				end
